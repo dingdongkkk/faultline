@@ -79,8 +79,8 @@ def test_faultline_context_reaches_the_model_only_when_on(make_project, monkeypa
     cfg = make_project("shop")
     on = Scripted([act("run_tests", target=TARGET), act("finish", summary="x")])
     rec = ag.run_agent(cfg.repo_root, sys.executable, TARGET, on, use_faultline=True)
-    assert rec["faultline_injections"] >= 1
-    assert "Faultline" in on.seen[0]  # prompt-time context in the task
+    assert rec["faultline_injections"] >= 1 and rec["faultline_transport"] == "mcp-stdio"
+    assert "Faultline" in on.seen[0]  # prompt-time context in the task, fetched over MCP
     off = Scripted([act("run_tests", target=TARGET), act("finish", summary="x")])
     rec2 = ag.run_agent(cfg.repo_root, sys.executable, TARGET, off, use_faultline=False)
     assert rec2["faultline_injections"] == 0 and "Faultline" not in off.seen[0]
@@ -104,6 +104,7 @@ def test_gemini_request_shape(monkeypatch):
     assert [c["role"] for c in sent["body"]["contents"]] == ["user", "model"]
     assert sent["body"]["systemInstruction"]["parts"][0]["text"] == "sys"
     assert (u.prompt_tokens, u.completion_tokens, u.thinking_tokens) == (12, 3, 5)
+    assert sent["body"]["generationConfig"]["thinkingConfig"] == {"thinkingLevel": "minimal"}
 
 
 def test_gemini_requires_key_and_local_refuses_remote_endpoints(monkeypatch):
@@ -120,3 +121,41 @@ def test_missing_test_path_suggests_closest(proj):
     ws = ag.Workspace(__import__("pathlib").Path(proj.repo_root), sys.executable)
     obs, raw = ws.run_tests("test/test_cart.py::test_small_order")
     assert obs.startswith("no such test path: test/test_cart.py") and "tests/test_cart.py" in obs and raw == ""
+
+
+
+def test_gemini_rate_limit_retries_then_succeeds(monkeypatch):
+    calls = {"n": 0}
+
+    def flaky(url, body, headers, timeout):
+        calls["n"] += 1
+        if calls["n"] < 3:
+            e = ag.ProviderError("HTTP 429")
+            e.status, e.detail = 429, '{"retryDelay": "0s"}'
+            raise e
+        return {"candidates": [{"content": {"parts": [{"text": act("finish", summary="ok")}]}}], "usageMetadata": {}}
+
+    monkeypatch.setattr(ag, "_post", flaky)
+    monkeypatch.setattr(ag.time, "sleep", lambda s: None)
+    g = ag.GeminiProvider(api_key="k")
+    assert json.loads(g.complete("s", [{"role": "user", "content": "x"}], ag.Usage(), 10))["tool"] == "finish"
+    assert calls["n"] == 3 and g.rate_limit_waits == 2
+
+
+
+def test_gemini_retries_transient_server_errors(monkeypatch):
+    calls = {"n": 0}
+
+    def flaky(url, body, headers, timeout):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            e = ag.ProviderError("HTTP 500")
+            e.status, e.detail = 500, "INTERNAL"
+            raise e
+        return {"candidates": [{"content": {"parts": [{"text": act("finish", summary="ok")}]}}], "usageMetadata": {}}
+
+    monkeypatch.setattr(ag, "_post", flaky)
+    monkeypatch.setattr(ag.time, "sleep", lambda s: None)
+    g = ag.GeminiProvider(api_key="k")
+    g.complete("s", [{"role": "user", "content": "x"}], ag.Usage(), 10)
+    assert g.server_error_retries == 1 and g.rate_limit_waits == 0

@@ -56,6 +56,9 @@ def main() -> int:
         "harness_wall_s": round(time.monotonic() - t0, 1), "protocol": "agent-v1",
         "private_store_sha256_at_run": private_digest(), "agent": agent,
         "judge": judge(c, checkout, baseline_tests, work),
+        # The agent's actual change, so a root-cause fix can be told apart from a symptom patch.
+        "diff": subprocess.run(["git", "-C", str(checkout), "diff", "-U1", "--", ".", ":(exclude).claude"],
+                               capture_output=True, text=True).stdout[:6000],
     }
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)

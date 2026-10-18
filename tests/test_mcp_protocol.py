@@ -41,7 +41,7 @@ def test_tools_listed_with_contract_arguments(make_project):
             return await client.list_tools()
 
     tools = {t.name: t for t in asyncio.run(go()).tools}
-    assert set(tools) == {"search_code", "investigate_failure", "expand_evidence", "check_patch", "capture_failure", "read_capture"}
+    assert set(tools) == {"search_code", "investigate_failure", "expand_evidence", "check_patch", "capture_failure", "read_capture", "failure_context"}
     inv = tools["investigate_failure"].input_schema["properties"]
     assert inv["budget_tokens"]["default"] == 1200 and inv["max_rounds"]["default"] == 3
     assert inv["timeout_seconds"]["default"] == 120

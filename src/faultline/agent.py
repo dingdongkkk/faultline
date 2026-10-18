@@ -71,8 +71,10 @@ def _post(url: str, body: dict, headers: dict, timeout: float) -> dict:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return json.load(r)
     except urllib.error.HTTPError as e:
-        detail = e.read()[:300].decode("utf-8", "replace")
-        raise ProviderError(f"HTTP {e.code}: {detail}") from e
+        detail = e.read()[:4000].decode("utf-8", "replace")
+        err = ProviderError(f"HTTP {e.code}: {detail[:300]}")
+        err.status, err.detail = e.code, detail
+        raise err from e
     except (urllib.error.URLError, TimeoutError, ConnectionError, ValueError) as e:
         raise ProviderError(f"{type(e).__name__}: {e}"[:300]) from e
 
@@ -148,8 +150,15 @@ class GeminiProvider:
     URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
     def __init__(self, model: str = "gemma-4-26b-a4b-it", api_key: str | None = None,
-                 max_tokens: int = 1024, temperature: float = 0.0):
+                 max_tokens: int = 1024, temperature: float = 0.0, thinking: str = "minimal"):
         self.model = model
+        # Gemma 4 thinks by default (~940 thinking tokens and ~20 s for a trivial reply, measured);
+        # "minimal" disables it. "default" sends no thinking config.
+        self.thinking = thinking
+        self.max_rate_retries = 12
+        self.rate_limit_waits = 0
+        self.rate_limit_seconds = 0.0
+        self.server_error_retries = 0
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or _key_file()
         if not self.api_key:
             raise ValueError("set GEMINI_API_KEY or write the key to ~/.config/faultline/gemini_api_key "
@@ -158,14 +167,35 @@ class GeminiProvider:
         self.temperature = temperature
 
     def model_id(self) -> str:
-        return f"gemini-api:{self.model}"
+        return f"gemini-api:{self.model}:thinking={self.thinking}"
 
     def complete(self, system: str, messages: list[dict], usage: Usage, timeout: float) -> str:
         contents = [{"role": "model" if m["role"] == "assistant" else "user", "parts": [{"text": m["content"]}]}
                     for m in messages]
         body = {"systemInstruction": {"parts": [{"text": system}]}, "contents": contents,
                 "generationConfig": {"temperature": self.temperature, "maxOutputTokens": self.max_tokens}}
-        r = _post(self.URL.format(model=self.model), body, {"x-goog-api-key": self.api_key}, timeout)
+        if self.thinking != "default":
+            body["generationConfig"]["thinkingConfig"] = {"thinkingLevel": self.thinking}
+        r = None
+        for attempt in range(self.max_rate_retries + 1):
+            try:
+                r = _post(self.URL.format(model=self.model), body, {"x-goog-api-key": self.api_key}, timeout)
+                break
+            except ProviderError as e:
+                status = getattr(e, "status", None)
+                if status not in (429, 500, 502, 503, 504) or attempt == self.max_rate_retries:
+                    raise
+                if status == 429:
+                    # Free-tier rate limit: wait as instructed (retryDelay). No tokens are used.
+                    m = re.search(r'"retryDelay":\s*"(\d+(?:\.\d+)?)s"', getattr(e, "detail", ""))
+                    delay = min(90.0, float(m.group(1)) + 1 if m else 10.0 * (attempt + 1))
+                    self.rate_limit_waits += 1
+                    self.rate_limit_seconds += delay
+                else:
+                    # Transient server error (observed: HTTP 500 INTERNAL from the Gemma endpoint).
+                    delay = min(60.0, 5.0 * (attempt + 1))
+                    self.server_error_retries += 1
+                time.sleep(delay)
         u = r.get("usageMetadata") or {}
         usage.add(u.get("promptTokenCount"), u.get("candidatesTokenCount"), u.get("thoughtsTokenCount"))
         try:
@@ -179,7 +209,8 @@ def make_provider(name: str, **kw):
     if name == "local":
         return LocalProvider(**{k: v for k, v in kw.items() if k in ("endpoint", "max_tokens", "temperature") and v is not None})
     if name == "gemini":
-        return GeminiProvider(**{k: v for k, v in kw.items() if k in ("model", "max_tokens", "temperature") and v is not None})
+        return GeminiProvider(**{k: v for k, v in kw.items()
+                                 if k in ("model", "max_tokens", "temperature", "thinking") and v is not None})
     raise ValueError(f"unknown provider: {name}")
 
 
@@ -307,12 +338,48 @@ def parse_action(text: str) -> dict | None:
     return None
 
 
-def faultline_context(root: Path, event: dict) -> str | None:
-    from .claude import context  # same code path as the Claude Code hooks
+TRANSPORT = {"used": None}
 
+
+def _context_via_mcp(root: Path, python: str, kind: str, text: str) -> str | None:
+    """Call Faultline's `failure_context` MCP tool over stdio, like any MCP client."""
+    import asyncio
+
+    from mcp import Client, StdioServerParameters
+
+    params = StdioServerParameters(
+        command=sys.executable, args=["-m", "faultline.cli", "serve", "--repo", str(root), "--python", python],
+        env={**{k: v for k, v in os.environ.items()
+                if k in ("PATH", "HOME", "PYTHONPATH", "LANG") or k.startswith("FAULTLINE_")},
+             "PYTHONPATH": os.pathsep.join(filter(None, [str(Path(__file__).resolve().parents[1]),
+                                                         os.environ.get("PYTHONPATH", "")]))})
+
+    async def go():
+        async with Client(params) as client:
+            r = await client.call_tool("failure_context", {"kind": kind, "text": text})
+            return "".join(getattr(c, "text", "") for c in r.content) if not r.is_error else ""
+
+    return asyncio.run(go()) or None
+
+
+def faultline_context(root: Path, event: dict, python: str = sys.executable) -> str | None:
+    """Faultline context for the agent, obtained through the MCP server (falls back to a
+    direct call only if the MCP SDK is unavailable; the record says which was used)."""
+    kind = "task" if event.get("hook_event_name") == "UserPromptSubmit" else "test_output"
+    text = event.get("prompt", "") if kind == "task" else (event.get("tool_response") or {}).get("stdout", "")
     try:
-        return context(str(root), dict(event, cwd=str(root)))
-    except (OSError, ValueError, TypeError, AttributeError):
+        out = _context_via_mcp(root, python, kind, text)
+        TRANSPORT["used"] = "mcp-stdio"
+        return out
+    except ImportError:
+        from .claude import context
+
+        TRANSPORT["used"] = "direct"
+        try:
+            return context(str(root), dict(event, cwd=str(root)))
+        except (OSError, ValueError, TypeError, AttributeError):
+            return None
+    except Exception:  # noqa: BLE001 - never break the agent loop on context errors
         return None
 
 
@@ -325,7 +392,7 @@ def run_agent(repo: str, python: str, failing_test: str, provider, *, use_faultl
             f"so the intended behavior holds. Do not modify any test files.")
     injected: list[int] = []
     if use_faultline:
-        ctx = faultline_context(root, {"hook_event_name": "UserPromptSubmit", "prompt": task})
+        ctx = faultline_context(root, {"hook_event_name": "UserPromptSubmit", "prompt": task}, python)
         if ctx:
             task += "\n\n" + ctx
             injected.append(len(ctx.encode()))
@@ -375,7 +442,7 @@ def run_agent(repo: str, python: str, failing_test: str, provider, *, use_faultl
                     obs, raw = ws.run_tests(str(args.get("target", "")))
                     if use_faultline and "exit code 0" not in obs.splitlines()[0]:
                         ctx = faultline_context(root, {"hook_event_name": "PostToolUseFailure", "tool_name": "Bash",
-                                                       "tool_response": {"stdout": raw, "stderr": ""}})
+                                                       "tool_response": {"stdout": raw, "stderr": ""}}, python)
                         if ctx:
                             obs += "\n\n" + ctx
                             injected.append(len(ctx.encode()))
@@ -394,12 +461,16 @@ def run_agent(repo: str, python: str, failing_test: str, provider, *, use_faultl
     return {
         "status": status, "summary": summary, "steps": len([m for m in messages if m["role"] == "assistant"]),
         "invalid_replies": invalid, "tool_calls": tool_counts, "edits": ws.edits,
-        "faultline": use_faultline, "faultline_injections": len(injected), "faultline_injected_bytes": sum(injected),
+        "faultline": use_faultline, "faultline_transport": TRANSPORT["used"] if use_faultline else None,
+        "faultline_injections": len(injected), "faultline_injected_bytes": sum(injected),
         "provider": provider.name, "model": provider.model_id(),
         "usage": {"model_calls": usage.calls, "prompt_tokens": usage.prompt_tokens,
                   "completion_tokens": usage.completion_tokens, "thinking_tokens": usage.thinking_tokens,
                   "total_tokens": usage.prompt_tokens + usage.completion_tokens + usage.thinking_tokens},
         "wall_seconds": round(time.monotonic() - t0, 1),
+        "rate_limit_waits": getattr(provider, "rate_limit_waits", 0),
+        "rate_limit_wait_seconds": round(getattr(provider, "rate_limit_seconds", 0.0), 1),
+        "server_error_retries": getattr(provider, "server_error_retries", 0),
         "trace": trace,
     }
 
@@ -415,12 +486,14 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--model", default=None, help="gemini model id (default gemma-4-26b-a4b-it)")
     ap.add_argument("--endpoint", default=None, help="local llama-server URL (default http://127.0.0.1:8089)")
     ap.add_argument("--faultline", choices=["on", "off"], default="on")
+    ap.add_argument("--thinking", choices=["minimal", "low", "medium", "high", "default"], default=None,
+                    help="gemini provider thinking level (default minimal)")
     ap.add_argument("--max-steps", type=int, default=30)
     ap.add_argument("--wall-seconds", type=int, default=900)
     ap.add_argument("--out", default=None, help="write the JSON record here")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args(argv)
-    provider = make_provider(args.provider, model=args.model, endpoint=args.endpoint)
+    provider = make_provider(args.provider, model=args.model, endpoint=args.endpoint, thinking=args.thinking)
     if args.provider == "gemini" and not args.quiet:
         print("Note: the gemini provider sends task text, code excerpts and test output to Google.", file=sys.stderr)
     log = None if args.quiet else (lambda s: print(s, file=sys.stderr))
