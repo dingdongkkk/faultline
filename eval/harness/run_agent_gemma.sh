@@ -5,8 +5,8 @@
 set -u
 cd "$(dirname "$0")/../.."
 MODEL="${1:-gemma-4-26b-a4b-it}"
-: "${GEMINI_API_KEY:?set GEMINI_API_KEY first (Google AI Studio)}"
-OUT="eval/results/agent-gemini/${MODEL}"
+[ -n "${GEMINI_API_KEY:-}" ] || [ -f "$HOME/.config/faultline/gemini_api_key" ] || { echo "set GEMINI_API_KEY or ~/.config/faultline/gemini_api_key"; exit 1; }
+OUT="eval/results/agent-gemini-v2/${MODEL}"
 run() { echo "$(date +%T) $1 $2 t$3"; .venv/bin/python eval/harness/run_agent_trial.py "$1" "$2" "$3" --provider gemini --model "$MODEL" --out "$OUT" | tail -1; }
 for t in 1 2 3; do
   if (( t % 2 == 1 )); then run e8_ytdl A $t; run e8_ytdl H $t; else run e8_ytdl H $t; run e8_ytdl A $t; fi

@@ -124,6 +124,20 @@ def build_server(cfg: FaultlineConfig, force_planner: str | None = None) -> MCPS
         except (ValueError, KeyError) as e:
             raise ToolError(f"invalid_argument: {e}") from e
 
+    @mcp.tool(structured_output=False)
+    def failure_context(kind: Literal["task", "test_output"], text: str) -> CallToolResult:
+        """Debugging context for a failing test. kind=task: repair request -> reproduction hint.
+        kind=test_output: failing pytest output -> crash-site code + captured cause candidate. Empty if not useful."""
+        from .claude import context as _context
+
+        if len(text) > 1_000_000:
+            raise ToolError("invalid_argument: text too large")
+        event = ({"hook_event_name": "UserPromptSubmit", "prompt": text} if kind == "task" else
+                 {"hook_event_name": "PostToolUseFailure", "tool_name": "Bash",
+                  "tool_response": {"stdout": text, "stderr": ""}})
+        out = _context(cfg.repo_root, dict(event, cwd=cfg.repo_root)) or ""
+        return CallToolResult(content=[TextContent(type="text", text=out)])
+
     return mcp
 
 
