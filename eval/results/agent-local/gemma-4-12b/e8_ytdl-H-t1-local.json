@@ -1,0 +1,233 @@
+{
+ "kind": "open_model_agent_trial",
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "H",
+ "trial": 1,
+ "provider": "local",
+ "model_requested": null,
+ "started_at": "2026-10-18T12:20:48+00:00",
+ "harness_wall_s": 322.3,
+ "protocol": "agent-v1",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "agent": {
+  "status": "max_steps",
+  "summary": "",
+  "steps": 30,
+  "invalid_replies": 0,
+  "tool_calls": {
+   "run_tests": 2,
+   "read_file": 2,
+   "edit_file": 26
+  },
+  "edits": [],
+  "faultline": true,
+  "faultline_transport": "mcp-stdio",
+  "faultline_injections": 2,
+  "faultline_injected_bytes": 1798,
+  "provider": "local",
+  "model": "gemma-4-12b-it-qat-q4_0.gguf@b11669-620d2225c",
+  "usage": {
+   "model_calls": 30,
+   "prompt_tokens": 97600,
+   "completion_tokens": 1555,
+   "thinking_tokens": 0,
+   "total_tokens": 99155
+  },
+  "wall_seconds": 321.1,
+  "rate_limit_waits": 0,
+  "rate_limit_wait_seconds": 0.0,
+  "server_error_retries": 0,
+  "trace": [
+   {
+    "step": 1,
+    "tool": "run_tests",
+    "args": "{\"target\": \"tests/test_YoutubeDL.py::TestFormatSelection::test_youtube_format_selection\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 2,
+    "tool": "run_tests",
+    "args": "{\"target\": \"test/test_YoutubeDL.py::TestFormatSelection::test_youtube_format_selection\"}",
+    "injected_bytes": 1285
+   },
+   {
+    "step": 3,
+    "tool": "read_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"start\": 950, \"end\": 1010}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 4,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 5,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 6,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 7,
+    "tool": "read_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"start\": 950, \"end\": 970}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 8,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 9,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 10,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 11,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 12,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 13,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 14,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 15,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 16,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 17,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 18,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 19,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 20,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 21,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 22,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 23,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 24,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 25,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 26,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 27,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 28,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 29,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 30,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"                         current_selector = None\", \"new\": \"                         # current_selector = None\"}",
+    "injected_bytes": 0
+   }
+  ]
+ },
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": false,
+  "visible_and_hidden_passed": false,
+  "hidden_failures": 0,
+  "correct": false,
+  "diff_stat": ""
+ },
+ "diff": ""
+}

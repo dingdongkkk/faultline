@@ -1,0 +1,77 @@
+{
+ "kind": "open_model_agent_trial",
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "H",
+ "trial": 0,
+ "provider": "gemini",
+ "model_requested": "gemma-4-26b-a4b-it",
+ "started_at": "2026-10-18T11:43:54+00:00",
+ "harness_wall_s": 34.2,
+ "protocol": "agent-v1",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "agent": {
+  "status": "provider_error",
+  "summary": "HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+  "steps": 5,
+  "invalid_replies": 0,
+  "tool_calls": {
+   "run_tests": 1,
+   "read_file": 4
+  },
+  "edits": [],
+  "faultline": true,
+  "faultline_injections": 2,
+  "faultline_injected_bytes": 1798,
+  "provider": "gemini",
+  "model": "gemini-api:gemma-4-26b-a4b-it:thinking=minimal",
+  "usage": {
+   "model_calls": 5,
+   "prompt_tokens": 11986,
+   "completion_tokens": 1211,
+   "thinking_tokens": 0,
+   "total_tokens": 13197
+  },
+  "wall_seconds": 34.0,
+  "trace": [
+   {
+    "step": 1,
+    "tool": "run_tests",
+    "args": "{\"target\": \"test/test_YoutubeDL.py::TestFormatSelection::test_youtube_format_selection\"}",
+    "injected_bytes": 1285
+   },
+   {
+    "step": 2,
+    "tool": "read_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"start\": 950, \"end\": 1010}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 3,
+    "tool": "read_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"start\": 250, \"end\": 350}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 4,
+    "tool": "read_file",
+    "args": "{\"path\": \"test/test_YoutubeDL.py\", \"start\": 250, \"end\": 270}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 5,
+    "tool": "read_file",
+    "args": "{\"path\": \"test/test_YoutubeDL.py\", \"start\": 250, \"end\": 270}",
+    "injected_bytes": 0
+   }
+  ]
+ },
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": false,
+  "visible_and_hidden_passed": false,
+  "hidden_failures": 0,
+  "correct": false,
+  "diff_stat": ""
+ }
+}

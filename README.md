@@ -154,7 +154,26 @@ because agents just read the whole repo. The silence rules fixed this:
   design).
 - **A small local model (Qwen3-4B) could not fix the large bug,** with or
   without Faultline.
-- **Gemma 4 agent results are pending** and will be added here.
+
+### Open-weight model as the main agent: Gemma 4 12B, fully local
+On the same large bug, `faultline agent` ran Gemma 4 12B on a Mac via
+llama.cpp, with Faultline's context delivered **over MCP** (`failure_context`
+tool). Runs are deterministic (temperature 0), so repeats were identical.
+
+| Gemma 4 12B | Fixed? | Tokens | Where it went |
+|---|---|---|---|
+| Without Faultline | No | 88,292 | Read the crash site (lines 980–1010) and edited the symptom (`if current_selector:`) |
+| With Faultline (MCP) | No | 99,155 | Went straight to the **real cause**: read 950–1010 and targeted `current_selector = None` (line 961) |
+
+- **Honest result:** no fix and no token saving with a 12B model. Both runs
+  hit the 30-step limit, repeating edits whose "old text" never matched the
+  file exactly.
+- **What Faultline changed:** it steered the open model to the true root cause
+  instead of the crash site. A model that edits more reliably (larger Gemma 4
+  via the API, or a better edit tool) is the next step.
+- **Gemma 4 via the Gemini API:** two attempts hit free-tier rate limits and
+  repeated HTTP 500 errors, so they are recorded as failed attempts, not
+  results.
 
 **100 real sessions recorded** in total. See the full report in
 [docs/EVALUATION.md](docs/EVALUATION.md) and the raw data in
