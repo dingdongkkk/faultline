@@ -11,7 +11,7 @@ from .config import ConfigError, load_config
 
 def _common(p: argparse.ArgumentParser) -> None:
     p.add_argument("--repo", required=True, help="repository root")
-    p.add_argument("--python", required=True, help="absolute path of the target test interpreter")
+    p.add_argument("--python", required=True, help="target test interpreter (e.g. .venv/bin/python)")
     p.add_argument("--pytest-arg", action="append", default=[], dest="pytest_args")
     p.add_argument("--declared-env", action="append", default=[])
     p.add_argument("--state-dir")

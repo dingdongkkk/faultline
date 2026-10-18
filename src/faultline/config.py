@@ -60,7 +60,17 @@ def load_config(repo_root: str, python: str, **kwargs) -> FaultlineConfig:
         raise ConfigError(f"repo_root is not a directory: {root}")
     py = Path(python).expanduser()
     if not py.is_absolute():
-        raise ConfigError("python must be an absolute path to the target interpreter")
+        if os.sep not in python:  # bare name such as "python3": look it up on PATH
+            import shutil
+
+            found = shutil.which(python)
+            if not found:
+                raise ConfigError(f"python interpreter not found on PATH: {python}")
+            py = Path(found)
+        else:
+            # Relative to the current directory. abspath (not resolve) keeps a virtualenv's
+            # python symlink, so the venv's packages stay visible.
+            py = Path(os.path.abspath(py))
     if not os.access(py, os.X_OK):
         raise ConfigError(f"python is not executable: {py}")
     cfg = FaultlineConfig(repo_root=str(root), python=str(py), **kwargs)
