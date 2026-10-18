@@ -1,0 +1,68 @@
+{
+ "kind": "open_model_agent_trial",
+ "case": "e6_invoicing",
+ "category": "multi_module_misleading_symptom",
+ "condition": "A",
+ "trial": 1,
+ "provider": "gemini",
+ "model_requested": "gemma-4-26b-a4b-it",
+ "started_at": "2026-10-18T12:00:03+00:00",
+ "harness_wall_s": 29.8,
+ "protocol": "agent-v1",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "agent": {
+  "status": "provider_error",
+  "summary": "HTTP 500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"status\": \"INTERNAL\"\n  }\n}\n",
+  "steps": 3,
+  "invalid_replies": 0,
+  "tool_calls": {
+   "list_files": 1,
+   "run_tests": 1,
+   "read_file": 1
+  },
+  "edits": [],
+  "faultline": false,
+  "faultline_injections": 0,
+  "faultline_injected_bytes": 0,
+  "provider": "gemini",
+  "model": "gemini-api:gemma-4-26b-a4b-it:thinking=minimal",
+  "usage": {
+   "model_calls": 3,
+   "prompt_tokens": 3388,
+   "completion_tokens": 1131,
+   "thinking_tokens": 0,
+   "total_tokens": 4519
+  },
+  "wall_seconds": 29.7,
+  "rate_limit_waits": 0,
+  "rate_limit_wait_seconds": 0.0,
+  "trace": [
+   {
+    "step": 1,
+    "tool": "list_files",
+    "args": "{\"path\": \".\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 2,
+    "tool": "run_tests",
+    "args": "{\"target\": \"tests/test_invoice.py::test_invoice_jpy\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 3,
+    "tool": "read_file",
+    "args": "{\"path\": \"tests/test_invoice.py\", \"start\": 1, \"end\": 30}",
+    "injected_bytes": 0
+   }
+  ]
+ },
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": false,
+  "visible_and_hidden_passed": false,
+  "hidden_failures": 4,
+  "correct": false,
+  "diff_stat": ""
+ }
+}

@@ -1,0 +1,128 @@
+{
+ "kind": "open_model_agent_trial",
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "A",
+ "trial": 3,
+ "provider": "gemini",
+ "model_requested": "gemma-4-26b-a4b-it",
+ "started_at": "2026-10-18T11:46:10+00:00",
+ "harness_wall_s": 591.3,
+ "protocol": "agent-v1",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "agent": {
+  "status": "finished",
+  "summary": "Fixed AttributeError in _build_selector_function by adding a check for None selector, which can occur during recursive calls in format selection parsing.",
+  "steps": 13,
+  "invalid_replies": 1,
+  "tool_calls": {
+   "list_files": 1,
+   "run_tests": 4,
+   "read_file": 2,
+   "edit_file": 3,
+   "search": 1,
+   "finish": 1
+  },
+  "edits": [
+   "youtube_dl/YoutubeDL.py",
+   "youtube_dl/YoutubeDL.py"
+  ],
+  "faultline": false,
+  "faultline_injections": 0,
+  "faultline_injected_bytes": 0,
+  "provider": "gemini",
+  "model": "gemini-api:gemma-4-26b-a4b-it:thinking=minimal",
+  "usage": {
+   "model_calls": 13,
+   "prompt_tokens": 114839,
+   "completion_tokens": 9091,
+   "thinking_tokens": 0,
+   "total_tokens": 123930
+  },
+  "wall_seconds": 591.2,
+  "rate_limit_waits": 2,
+  "rate_limit_wait_seconds": 59.0,
+  "trace": [
+   {
+    "step": 1,
+    "tool": "list_files",
+    "args": "{\"path\": \".\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 2,
+    "tool": "run_tests",
+    "args": "{\"target\": \"tests/test_YoutubeDL.py::TestFormatSelection::test_youtube_format_selection\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 3,
+    "tool": "run_tests",
+    "args": "{\"target\": \"test/test_YoutubeDL.py::TestFormatSelection::test_youtube_format_selection\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 4,
+    "tool": "read_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"start\": 970, \"end\": 1010}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 5,
+    "tool": "read_file",
+    "args": "{\"path\": \"test/test_YoutubeDL.py\", \"start\": 250, \"end\": 270}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 6,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"    elif selector.type == GROUP:\", \"new\": \"    elif selector and selector.type == GROUP:\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 7,
+    "tool": "run_tests",
+    "args": "{\"target\": \"test/test_YoutubeDL.py::TestFormatSelection::test_youtube_format_selection\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 8,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"    elif selector.type == GROUP:\", \"new\": \"    elif selector and selector.type == GROUP:\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 10,
+    "tool": "search",
+    "args": "{\"pattern\": \"if isinstance\\\\(selector, list\\\\):\", \"path\": \"youtube_dl/YoutubeDL.py\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 11,
+    "tool": "edit_file",
+    "args": "{\"path\": \"youtube_dl/YoutubeDL.py\", \"old\": \"            if isinstance(selector, list):\", \"new\": \"            if selector is None:\\n                return lambda formats: []\\n            if isinstance(",
+    "injected_bytes": 0
+   },
+   {
+    "step": 12,
+    "tool": "run_tests",
+    "args": "{\"target\": \"test/test_YoutubeDL.py::TestFormatSelection::test_youtube_format_selection\"}",
+    "injected_bytes": 0
+   },
+   {
+    "step": 13,
+    "tool": "finish",
+    "args": "{\"summary\": \"Fixed AttributeError in _build_selector_function by adding a check for None selector, which can occur during recursive calls in format selection parsing.\"}",
+    "injected_bytes": 0
+   }
+  ]
+ },
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 4 +++-\n 1 file changed, 3 insertions(+), 1 deletion(-)"
+ }
+}

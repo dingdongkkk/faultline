@@ -1,0 +1,45 @@
+{
+ "kind": "open_model_agent_trial",
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "A",
+ "trial": 1,
+ "provider": "gemini",
+ "model_requested": "gemma-4-26b-a4b-it",
+ "started_at": "2026-10-18T11:44:55+00:00",
+ "harness_wall_s": 3.4,
+ "protocol": "agent-v1",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "agent": {
+  "status": "provider_error",
+  "summary": "HTTP 500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"status\": \"INTERNAL\"\n  }\n}\n",
+  "steps": 0,
+  "invalid_replies": 0,
+  "tool_calls": {},
+  "edits": [],
+  "faultline": false,
+  "faultline_injections": 0,
+  "faultline_injected_bytes": 0,
+  "provider": "gemini",
+  "model": "gemini-api:gemma-4-26b-a4b-it:thinking=minimal",
+  "usage": {
+   "model_calls": 0,
+   "prompt_tokens": 0,
+   "completion_tokens": 0,
+   "thinking_tokens": 0,
+   "total_tokens": 0
+  },
+  "wall_seconds": 3.3,
+  "rate_limit_waits": 0,
+  "rate_limit_wait_seconds": 0.0,
+  "trace": []
+ },
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": false,
+  "visible_and_hidden_passed": false,
+  "hidden_failures": 0,
+  "correct": false,
+  "diff_stat": ""
+ }
+}

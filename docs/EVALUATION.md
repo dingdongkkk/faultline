@@ -747,3 +747,30 @@ cause candidate added no measurable saving on e8.**
 A benefit would require cases where the cause is far from the crash (other
 function or file, or beyond a single read window); none are in the case
 set yet.
+
+
+## Open-model agent: Gemma 4 12B local and Gemma 4 API attempts (2026-10-18)
+
+**Gemma 4 via the Gemini API** (`gemma-4-26b-a4b-it`, thinking `minimal`):
+- Attempt 1 (`eval/results/agent-gemini-attempt1-http500/`): 7 of 8 trials
+  ended on HTTP 500 INTERNAL.
+- Attempt 2 (`agent-gemini-attempt2-slow/`): stopped after the first trial
+  ran for more than 8 minutes in rate-limit and server-error waits.
+- These are **not results.** One completed attempt-1 trial (A t3) "fixed" e8
+  with a None guard at the crash site. That is a symptom patch, which passed
+  because e8 has no hidden tests.
+
+**Gemma 4 12B local** (`google/gemma-4-12B-it-qat-q4_0-gguf`, sha256
+`93567e57…538b`, 6.98 GB, llama.cpp b11669): `eval/results/agent-local/`.
+Faultline context was delivered via the MCP `failure_context` tool over
+stdio.
+- Temperature 0 with a fixed seed made repeats identical (H t1 = H t2 step
+  for step), so the run was stopped after A t1, H t1 and H t2.
+- **A:** 30 steps (max), 88,292 tokens, not fixed. It read the crash site
+  980–1010 and repeatedly edited around `if current_selector:`.
+- **H:** 30 steps (max), 99,155 tokens, not fixed. After the injected
+  context it read 950–1010 and repeatedly attempted `current_selector = None`
+  (line 961, the real cause). Its edits never matched the file text exactly.
+- **Reading:** Faultline redirected the open model from the symptom to the
+  root cause, but the 12B model could not produce a valid exact-match edit.
+  There was no fix and no token saving.
