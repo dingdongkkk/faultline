@@ -1,0 +1,53 @@
+{
+ "case": "e6_invoicing",
+ "category": "multi_module_misleading_symptom",
+ "condition": "A",
+ "trial": 3,
+ "dry_run": null,
+ "started_at": "2026-10-18T08:18:21+00:00",
+ "harness_wall_s": 13.54,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "3cd4188e57d6f8b533b29db698f39ad0f769c66c4a810112d74ab738c92db8a1",
+ "protocol": "v3-neutral-alwaysload",
+ "agent": {
+  "events": 17,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "tool_calls": {
+   "Bash": 3,
+   "Edit": 1
+  },
+  "tool_calls_total": 4,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 5,
+  "duration_ms": 12359,
+  "duration_api_ms": 10161,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 8,
+   "cache_creation_input_tokens": 18192,
+   "cache_read_input_tokens": 140197,
+   "output_tokens": 963
+  },
+  "final_text": "I fixed the bug in `invoicing/currency.py`, and all 8 tests now pass, including `test_invoice_jpy`.\n\nThe cause was in `minor_units`: it lowercased the currency code (`\"jpy\"`) before checking it against `ZERO_DECIMAL`, but that set stores codes in uppercase (`{\"JPY\", \"KRW\"}`). The check never matched, so JPY and KRW were treated as having two decimal places and the yen total came out as `\u00a514,118.50` instead of `\u00a514,118`.\n\nI changed `.lower()` to `.upper()`, so lowercase codes like `\"jpy\"` still work. I didn't touch any test files."
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "invoicing/currency.py | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)"
+ }
+}

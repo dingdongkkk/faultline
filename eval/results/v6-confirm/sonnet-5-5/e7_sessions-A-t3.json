@@ -1,0 +1,62 @@
+{
+ "case": "e7_sessions",
+ "category": "multi_module_misleading_symptom",
+ "condition": "A",
+ "trial": 3,
+ "dry_run": null,
+ "started_at": "2026-10-18T09:56:42+00:00",
+ "harness_wall_s": 16.75,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v4-search-neutral-deferred",
+ "model_requested": "claude-sonnet-5-5",
+ "agent": {
+  "events": 18,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "hooks": {
+   "events": 0,
+   "context_bytes": 0,
+   "output_bytes": 0,
+   "context_excerpt": null
+  },
+  "tool_calls": {
+   "Grep": 1,
+   "Bash": 3,
+   "Edit": 1
+  },
+  "tool_calls_total": 5,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 6,
+  "duration_ms": 15521,
+  "duration_api_ms": 13571,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 8,
+   "cache_creation_input_tokens": 17193,
+   "cache_read_input_tokens": 138796,
+   "output_tokens": 649
+  },
+  "final_text": "The bug was in `parse_12h` in `activity/timeparse.py`. It left \"12:xx AM\" as hour 12, so 12:10 AM was read as noon instead of just after midnight. That split the overnight session in two. I added a case that maps 12 AM to hour 0. All 7 tests now pass, including `test_session_across_midnight`."
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "activity/timeparse.py | 2 ++\n 1 file changed, 2 insertions(+)"
+ }
+}

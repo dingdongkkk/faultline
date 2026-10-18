@@ -1,0 +1,1677 @@
+{
+ "summary": {
+  "runs": 20,
+  "errors": 0,
+  "model_rounds": 24,
+  "model_action_rate": 0.583,
+  "first_attempt_valid_rate": 0.5,
+  "fallback_reasons": [
+   "invalid_after_retries"
+  ],
+  "rejections": [
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action",
+   "repeated_action"
+  ],
+  "median_ms_per_call": 2376.5,
+  "max_ms_per_call": 3494.3333333333335,
+  "server_rss_mib_max": 3278,
+  "memory_pressure_end": "System-wide memory free percentage: 28%",
+  "gate": {
+   "1_no_errors": true,
+   "2_model_action_rate>=0.7": false,
+   "3_no_invalid_or_repeat_executed": true,
+   "4_median_call<=5s": true,
+   "5_pressure_not_critical": true
+  },
+  "determinism_action_sequences": {
+   "money": [
+    [
+     "inspect_locations",
+     "inspect_locations",
+     "compare_observations"
+    ],
+    [
+     "inspect_locations",
+     "inspect_locations",
+     "inspect_locations"
+    ]
+   ],
+   "registry": [
+    [
+     "inspect_locations",
+     "inspect_locations",
+     "compare_observations"
+    ],
+    [
+     "inspect_locations",
+     "inspect_locations",
+     "compare_observations"
+    ]
+   ],
+   "misc": [
+    [
+     "inspect_locations",
+     "inspect_locations",
+     "stop"
+    ],
+    [
+     "inspect_locations",
+     "inspect_locations",
+     "stop"
+    ]
+   ],
+   "ochiai_basic": [
+    [
+     "inspect_locations",
+     "inspect_locations",
+     "inspect_locations"
+    ],
+    [
+     "inspect_locations",
+     "inspect_locations",
+     "inspect_locations"
+    ]
+   ]
+  },
+  "passed": false
+ },
+ "records": [
+  {
+   "repeat": 0,
+   "fixture": "shop",
+   "target": "tests/test_cart.py::test_bulk_threshold[10-1000]",
+   "planner": "local-model",
+   "wall_s": 15.44,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5540,
+    "response_tokens_estimate": 1847,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 15427,
+    "coverage_run_ms": 368,
+    "observation_ms": 5683,
+    "planner_ms": 8555,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [],
+   "server_rss_mib": 2965
+  },
+  {
+   "repeat": 0,
+   "fixture": "shop",
+   "target": "tests/test_cart.py::test_bulk_threshold[10-1000]",
+   "planner": "deterministic",
+   "wall_s": 2.49,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "planner_stopped",
+   "metrics": {
+    "response_bytes": 5880,
+    "response_tokens_estimate": 1960,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 2486,
+    "coverage_run_ms": 734,
+    "observation_ms": 1212,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2",
+       "L3"
+      ],
+      "locals": [
+       "rate",
+       "threshold",
+       "items",
+       "tiers",
+       "q",
+       "qty",
+       "total",
+       "unit"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "Ra14acf31",
+      "passing_run_id": "R74ca7491",
+      "rationale": ""
+     }
+    },
+    {
+     "round": 3,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "stop",
+      "reason": "sufficient_evidence",
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 2951
+  },
+  {
+   "repeat": 0,
+   "fixture": "money",
+   "target": "tests/test_money.py::test_small",
+   "planner": "local-model",
+   "wall_s": 10.9,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5679,
+    "response_tokens_estimate": 1893,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 10897,
+    "coverage_run_ms": 511,
+    "observation_ms": 2051,
+    "planner_ms": 7775,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2594,
+     "prompt_tokens": 257,
+     "completion_tokens": 36
+    },
+    {
+     "round": 2,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2227,
+     "prompt_tokens": 301,
+     "completion_tokens": 40
+    },
+    {
+     "round": 3,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "R3ecfd1c6",
+      "passing_run_id": "R94a542c5",
+      "rationale": ""
+     },
+     "inference_ms": 2953,
+     "prompt_tokens": 372,
+     "completion_tokens": 53
+    }
+   ],
+   "server_rss_mib": 3276
+  },
+  {
+   "repeat": 0,
+   "fixture": "money",
+   "target": "tests/test_money.py::test_small",
+   "planner": "deterministic",
+   "wall_s": 1.81,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "planner_stopped",
+   "metrics": {
+    "response_bytes": 5401,
+    "response_tokens_estimate": 1801,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 1808,
+    "coverage_run_ms": 678,
+    "observation_ms": 822,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "amount",
+       "cents"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "R3952fad8",
+      "passing_run_id": "Rcb5026db",
+      "rationale": ""
+     }
+    },
+    {
+     "round": 3,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "stop",
+      "reason": "sufficient_evidence",
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 3130
+  },
+  {
+   "repeat": 0,
+   "fixture": "registry",
+   "target": "tests/test_registry.py::test_b_lookup_default",
+   "planner": "local-model",
+   "wall_s": 22.22,
+   "error": null,
+   "status": "inconclusive",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5699,
+    "response_tokens_estimate": 1900,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 22215,
+    "coverage_run_ms": 285,
+    "observation_ms": 1990,
+    "planner_ms": 19348,
+    "rounds": 3,
+    "planner_retries": 4,
+    "planner_fallbacks": 2,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2416,
+     "prompt_tokens": 259,
+     "completion_tokens": 41
+    },
+    {
+     "round": 2,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "name",
+       "value"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 8178,
+     "prompt_tokens": 1038,
+     "completion_tokens": 123
+    },
+    {
+     "round": 3,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "R99a51778",
+      "passing_run_id": "Rba5da06b",
+      "rationale": ""
+     },
+     "inference_ms": 8749,
+     "prompt_tokens": 1266,
+     "completion_tokens": 123
+    }
+   ],
+   "server_rss_mib": 3009
+  },
+  {
+   "repeat": 0,
+   "fixture": "registry",
+   "target": "tests/test_registry.py::test_b_lookup_default",
+   "planner": "deterministic",
+   "wall_s": 2.12,
+   "error": null,
+   "status": "inconclusive",
+   "stopping_reason": "planner_stopped",
+   "metrics": {
+    "response_bytes": 5645,
+    "response_tokens_estimate": 1882,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 2114,
+    "coverage_run_ms": 741,
+    "observation_ms": 895,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "name",
+       "value"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "Rc8616e5f",
+      "passing_run_id": "Rd142958e",
+      "rationale": ""
+     }
+    },
+    {
+     "round": 3,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "stop",
+      "reason": "sufficient_evidence",
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 2996
+  },
+  {
+   "repeat": 0,
+   "fixture": "misc",
+   "target": "tests/test_misc.py::test_lambda",
+   "planner": "local-model",
+   "wall_s": 19.64,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "no_new_actions",
+   "metrics": {
+    "response_bytes": 5168,
+    "response_tokens_estimate": 1723,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 19632,
+    "coverage_run_ms": 348,
+    "observation_ms": 2034,
+    "planner_ms": 16768,
+    "rounds": 3,
+    "planner_retries": 4,
+    "planner_fallbacks": 2,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2848,
+     "prompt_tokens": 220,
+     "completion_tokens": 33
+    },
+    {
+     "round": 2,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [
+       "triple",
+       "x"
+      ],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 6579,
+     "prompt_tokens": 804,
+     "completion_tokens": 99
+    },
+    {
+     "round": 3,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "stop",
+      "reason": "no_useful_action",
+      "rationale": ""
+     },
+     "inference_ms": 7334,
+     "prompt_tokens": 915,
+     "completion_tokens": 112
+    }
+   ],
+   "server_rss_mib": 3008
+  },
+  {
+   "repeat": 0,
+   "fixture": "misc",
+   "target": "tests/test_misc.py::test_lambda",
+   "planner": "deterministic",
+   "wall_s": 2.21,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "no_new_actions",
+   "metrics": {
+    "response_bytes": 3840,
+    "response_tokens_estimate": 1280,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 2203,
+    "coverage_run_ms": 870,
+    "observation_ms": 837,
+    "rounds": 2,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [
+       "triple",
+       "x"
+      ],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "stop",
+      "reason": "no_useful_action",
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 2968
+  },
+  {
+   "repeat": 0,
+   "fixture": "ochiai_basic",
+   "target": "tests/test_a.py::test_two",
+   "planner": "local-model",
+   "wall_s": 24.76,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5782,
+    "response_tokens_estimate": 1928,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 24761,
+    "coverage_run_ms": 408,
+    "observation_ms": 3551,
+    "planner_ms": 20068,
+    "rounds": 3,
+    "planner_retries": 3,
+    "planner_fallbacks": 1,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 3111,
+     "prompt_tokens": 268,
+     "completion_tokens": 40
+    },
+    {
+     "round": 2,
+     "planner": "local-model",
+     "attempts": 2,
+     "rejected": [
+      "repeated_action"
+     ],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "a",
+       "a"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 6468,
+     "prompt_tokens": 700,
+     "completion_tokens": 90
+    },
+    {
+     "round": 3,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [
+       "a"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 10483,
+     "prompt_tokens": 1272,
+     "completion_tokens": 153
+    }
+   ],
+   "server_rss_mib": 3017
+  },
+  {
+   "repeat": 0,
+   "fixture": "ochiai_basic",
+   "target": "tests/test_a.py::test_two",
+   "planner": "deterministic",
+   "wall_s": 2.27,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5765,
+    "response_tokens_estimate": 1922,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 2271,
+    "coverage_run_ms": 473,
+    "observation_ms": 1374,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [
+       "a"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "Rdd5d18fe",
+      "passing_run_id": "R57bae4c3",
+      "rationale": ""
+     }
+    },
+    {
+     "round": 3,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_function",
+      "function_id": "F1",
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 2980
+  },
+  {
+   "repeat": 1,
+   "fixture": "shop",
+   "target": "tests/test_cart.py::test_bulk_threshold[10-1000]",
+   "planner": "local-model",
+   "wall_s": 20.11,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5397,
+    "response_tokens_estimate": 1799,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 20104,
+    "coverage_run_ms": 318,
+    "observation_ms": 3151,
+    "planner_ms": 15931,
+    "rounds": 3,
+    "planner_retries": 1,
+    "planner_fallbacks": 0,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [],
+   "server_rss_mib": 3113
+  },
+  {
+   "repeat": 1,
+   "fixture": "shop",
+   "target": "tests/test_cart.py::test_bulk_threshold[10-1000]",
+   "planner": "deterministic",
+   "wall_s": 2.48,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "planner_stopped",
+   "metrics": {
+    "response_bytes": 5880,
+    "response_tokens_estimate": 1960,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 2477,
+    "coverage_run_ms": 618,
+    "observation_ms": 1419,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2",
+       "L3"
+      ],
+      "locals": [
+       "rate",
+       "threshold",
+       "items",
+       "tiers",
+       "q",
+       "qty",
+       "total",
+       "unit"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "Re143eb3c",
+      "passing_run_id": "Rc8196980",
+      "rationale": ""
+     }
+    },
+    {
+     "round": 3,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "stop",
+      "reason": "sufficient_evidence",
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 2952
+  },
+  {
+   "repeat": 1,
+   "fixture": "money",
+   "target": "tests/test_money.py::test_small",
+   "planner": "local-model",
+   "wall_s": 9.57,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5619,
+    "response_tokens_estimate": 1873,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 9570,
+    "coverage_run_ms": 400,
+    "observation_ms": 1690,
+    "planner_ms": 6991,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2607,
+     "prompt_tokens": 257,
+     "completion_tokens": 36
+    },
+    {
+     "round": 2,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "amount",
+       "cents"
+      ],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2337,
+     "prompt_tokens": 303,
+     "completion_tokens": 47
+    },
+    {
+     "round": 3,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2046,
+     "prompt_tokens": 346,
+     "completion_tokens": 41
+    }
+   ],
+   "server_rss_mib": 3278
+  },
+  {
+   "repeat": 1,
+   "fixture": "money",
+   "target": "tests/test_money.py::test_small",
+   "planner": "deterministic",
+   "wall_s": 1.38,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "planner_stopped",
+   "metrics": {
+    "response_bytes": 5401,
+    "response_tokens_estimate": 1801,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 1377,
+    "coverage_run_ms": 355,
+    "observation_ms": 753,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "amount",
+       "cents"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "R955eb235",
+      "passing_run_id": "R4b019ce6",
+      "rationale": ""
+     }
+    },
+    {
+     "round": 3,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "stop",
+      "reason": "sufficient_evidence",
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 3275
+  },
+  {
+   "repeat": 1,
+   "fixture": "registry",
+   "target": "tests/test_registry.py::test_b_lookup_default",
+   "planner": "local-model",
+   "wall_s": 17.2,
+   "error": null,
+   "status": "inconclusive",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5697,
+    "response_tokens_estimate": 1899,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 17196,
+    "coverage_run_ms": 280,
+    "observation_ms": 1386,
+    "planner_ms": 15134,
+    "rounds": 3,
+    "planner_retries": 4,
+    "planner_fallbacks": 2,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2337,
+     "prompt_tokens": 259,
+     "completion_tokens": 41
+    },
+    {
+     "round": 2,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "name",
+       "value"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 6449,
+     "prompt_tokens": 1038,
+     "completion_tokens": 123
+    },
+    {
+     "round": 3,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "Rfa8d2c8c",
+      "passing_run_id": "Ra7d22725",
+      "rationale": ""
+     },
+     "inference_ms": 6345,
+     "prompt_tokens": 1263,
+     "completion_tokens": 123
+    }
+   ],
+   "server_rss_mib": 3195
+  },
+  {
+   "repeat": 1,
+   "fixture": "registry",
+   "target": "tests/test_registry.py::test_b_lookup_default",
+   "planner": "deterministic",
+   "wall_s": 1.43,
+   "error": null,
+   "status": "inconclusive",
+   "stopping_reason": "planner_stopped",
+   "metrics": {
+    "response_bytes": 5645,
+    "response_tokens_estimate": 1882,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 1428,
+    "coverage_run_ms": 423,
+    "observation_ms": 722,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "name",
+       "value"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "Rbaa678e8",
+      "passing_run_id": "R89bf3216",
+      "rationale": ""
+     }
+    },
+    {
+     "round": 3,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "stop",
+      "reason": "sufficient_evidence",
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 3137
+  },
+  {
+   "repeat": 1,
+   "fixture": "misc",
+   "target": "tests/test_misc.py::test_lambda",
+   "planner": "local-model",
+   "wall_s": 13.26,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "no_new_actions",
+   "metrics": {
+    "response_bytes": 5164,
+    "response_tokens_estimate": 1722,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 13259,
+    "coverage_run_ms": 303,
+    "observation_ms": 844,
+    "planner_ms": 11839,
+    "rounds": 3,
+    "planner_retries": 4,
+    "planner_fallbacks": 2,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 1467,
+     "prompt_tokens": 220,
+     "completion_tokens": 33
+    },
+    {
+     "round": 2,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [
+       "triple",
+       "x"
+      ],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 5098,
+     "prompt_tokens": 807,
+     "completion_tokens": 99
+    },
+    {
+     "round": 3,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "stop",
+      "reason": "no_useful_action",
+      "rationale": ""
+     },
+     "inference_ms": 5272,
+     "prompt_tokens": 915,
+     "completion_tokens": 99
+    }
+   ],
+   "server_rss_mib": 3122
+  },
+  {
+   "repeat": 1,
+   "fixture": "misc",
+   "target": "tests/test_misc.py::test_lambda",
+   "planner": "deterministic",
+   "wall_s": 1.2,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "no_new_actions",
+   "metrics": {
+    "response_bytes": 3840,
+    "response_tokens_estimate": 1280,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 1195,
+    "coverage_run_ms": 437,
+    "observation_ms": 512,
+    "rounds": 2,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [
+       "triple",
+       "x"
+      ],
+      "test_ids": [
+       "t0"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "stop",
+      "reason": "no_useful_action",
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 3116
+  },
+  {
+   "repeat": 1,
+   "fixture": "ochiai_basic",
+   "target": "tests/test_a.py::test_two",
+   "planner": "local-model",
+   "wall_s": 16.97,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5779,
+    "response_tokens_estimate": 1927,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 16965,
+    "coverage_run_ms": 325,
+    "observation_ms": 1937,
+    "planner_ms": 14188,
+    "rounds": 3,
+    "planner_retries": 3,
+    "planner_fallbacks": 1,
+    "planner_model": "Qwen3-4B-Q4_K_M.gguf@b11669-620d2225c"
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "local-model",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 2145,
+     "prompt_tokens": 268,
+     "completion_tokens": 40
+    },
+    {
+     "round": 2,
+     "planner": "local-model",
+     "attempts": 2,
+     "rejected": [
+      "repeated_action"
+     ],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1",
+       "L2"
+      ],
+      "locals": [
+       "a",
+       "a"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 4433,
+     "prompt_tokens": 698,
+     "completion_tokens": 90
+    },
+    {
+     "round": 3,
+     "planner": "local-model",
+     "attempts": 3,
+     "rejected": [
+      "repeated_action",
+      "repeated_action",
+      "repeated_action"
+     ],
+     "fallback_used": true,
+     "fallback_reason": "invalid_after_retries",
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [
+       "a"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     },
+     "inference_ms": 7609,
+     "prompt_tokens": 1275,
+     "completion_tokens": 153
+    }
+   ],
+   "server_rss_mib": 3210
+  },
+  {
+   "repeat": 1,
+   "fixture": "ochiai_basic",
+   "target": "tests/test_a.py::test_two",
+   "planner": "deterministic",
+   "wall_s": 2.03,
+   "error": null,
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "metrics": {
+    "response_bytes": 5765,
+    "response_tokens_estimate": 1922,
+    "token_estimate_method": "utf8_bytes_div_3",
+    "budget_tokens": 2000,
+    "wall_ms": 2032,
+    "coverage_run_ms": 368,
+    "observation_ms": 1288,
+    "rounds": 3,
+    "planner_retries": 0,
+    "planner_fallbacks": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_locations",
+      "location_ids": [
+       "L1"
+      ],
+      "locals": [
+       "a"
+      ],
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    },
+    {
+     "round": 2,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "compare_observations",
+      "failing_run_id": "R00303704",
+      "passing_run_id": "Re329d36c",
+      "rationale": ""
+     }
+    },
+    {
+     "round": 3,
+     "planner": "deterministic",
+     "attempts": 1,
+     "rejected": [],
+     "fallback_used": false,
+     "action": {
+      "action": "inspect_function",
+      "function_id": "F1",
+      "test_ids": [
+       "t0",
+       "t1"
+      ],
+      "rationale": ""
+     }
+    }
+   ],
+   "server_rss_mib": 3176
+  }
+ ]
+}

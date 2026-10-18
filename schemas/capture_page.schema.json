@@ -1,0 +1,88 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "capture_id": {
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "section": {
+      "title": "Section",
+      "type": "string"
+    },
+    "variable": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Variable"
+    },
+    "freshness": {
+      "enum": [
+        "unchanged",
+        "stale",
+        "unknown"
+      ],
+      "title": "Freshness",
+      "type": "string"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "next_cursor": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Cursor"
+    },
+    "total_chars": {
+      "title": "Total Chars",
+      "type": "integer"
+    },
+    "response_bytes": {
+      "default": 0,
+      "title": "Response Bytes",
+      "type": "integer"
+    },
+    "tokens_estimate": {
+      "default": 0,
+      "title": "Tokens Estimate",
+      "type": "integer"
+    },
+    "budget_scope": {
+      "default": "json_payload",
+      "enum": [
+        "json_payload",
+        "mcp_result"
+      ],
+      "title": "Budget Scope",
+      "type": "string"
+    },
+    "token_method": {
+      "const": "utf8_bytes_div_3",
+      "default": "utf8_bytes_div_3",
+      "title": "Token Method",
+      "type": "string"
+    }
+  },
+  "required": [
+    "capture_id",
+    "section",
+    "freshness",
+    "text",
+    "total_chars"
+  ],
+  "title": "CapturePage",
+  "type": "object"
+}

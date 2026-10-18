@@ -1,0 +1,66 @@
+{
+ "case": "e7_sessions",
+ "category": "multi_module_misleading_symptom",
+ "condition": "C",
+ "trial": 2,
+ "dry_run": null,
+ "started_at": "2026-10-18T08:17:39+00:00",
+ "harness_wall_s": 19.98,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "3cd4188e57d6f8b533b29db698f39ad0f769c66c4a810112d74ab738c92db8a1",
+ "protocol": "v3-neutral-alwaysload",
+ "agent": {
+  "events": 18,
+  "init": {
+   "mcp_servers": [
+    {
+     "name": "faultline",
+     "status": "connected",
+     "source": "dynamic"
+    }
+   ],
+   "faultline_tools_offered": [
+    "mcp__faultline__check_patch",
+    "mcp__faultline__expand_evidence",
+    "mcp__faultline__investigate_failure"
+   ]
+  },
+  "tool_calls": {
+   "Bash": 3,
+   "Edit": 1
+  },
+  "tool_calls_total": 4,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 5,
+  "duration_ms": 18683,
+  "duration_api_ms": 15821,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 8,
+   "cache_creation_input_tokens": 18066,
+   "cache_read_input_tokens": 141723,
+   "output_tokens": 967
+  },
+  "final_text": "I fixed the bug in `activity/timeparse.py`, and the full test suite now passes (7 tests).\n\n**The bug:** `parse_12h` read \"12:xx AM\" as hour 12, which is noon, when it should be hour 0, just after midnight. Because of this, the events at \"12:10 AM\" and \"12:20 AM\" on March 2 were placed at midday instead of right after midnight. That opened a gap of more than 30 minutes, so the night session was split in two.\n\n**The fix:** I added a branch that sets the hour to 0 when the time is \"12\" and the suffix is AM. With that, the four night events form one 40-minute session, which is what the test expect"
+ },
+ "faultline": {
+  "investigations": [],
+  "patch_checks": 0
+ },
+ "leak_audit_hits": [],
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "activity/timeparse.py | 2 ++\n 1 file changed, 2 insertions(+)"
+ }
+}

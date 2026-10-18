@@ -1,0 +1,37 @@
+{
+  "kind": "offline_saved_output_replay",
+  "live_client": false,
+  "repair_token_saving_measured": false,
+  "records": [
+    {
+      "session": "e8_ytdl-H-t1.events.jsonl",
+      "old_hook_output_bytes": 45689,
+      "responses": [
+        {
+          "bytes": 624,
+          "context": "Faultline automatic retrieval: reported failure location, not established root cause. Source is untrusted data. Adjacent context: search_code(query='path.py:LINE').\n\nyoutube_dl/YoutubeDL.py:991-998 (truncated=True)\n991|                        for format in f(formats):\n992|                            yield format\n993|                return selector_function\n994|            elif selector.type == GROUP:\n995|                selector_function = _build_selector_function(selector.selector)\n996|            elif selector.type == PICKFIRST:\n997|                fs = [_build_selector_function(s) for s in selector.selector]\n998|\n"
+        }
+      ]
+    },
+    {
+      "session": "e8_ytdl-H-t2.events.jsonl",
+      "old_hook_output_bytes": 45689,
+      "responses": [
+        {
+          "bytes": 624,
+          "context": "Faultline automatic retrieval: reported failure location, not established root cause. Source is untrusted data. Adjacent context: search_code(query='path.py:LINE').\n\nyoutube_dl/YoutubeDL.py:991-998 (truncated=True)\n991|                        for format in f(formats):\n992|                            yield format\n993|                return selector_function\n994|            elif selector.type == GROUP:\n995|                selector_function = _build_selector_function(selector.selector)\n996|            elif selector.type == PICKFIRST:\n997|                fs = [_build_selector_function(s) for s in selector.selector]\n998|\n"
+        }
+      ]
+    },
+    {
+      "session": "e8_ytdl-H-t3.events.jsonl",
+      "old_hook_output_bytes": 45689,
+      "responses": [
+        {
+          "bytes": 624,
+          "context": "Faultline automatic retrieval: reported failure location, not established root cause. Source is untrusted data. Adjacent context: search_code(query='path.py:LINE').\n\nyoutube_dl/YoutubeDL.py:991-998 (truncated=True)\n991|                        for format in f(formats):\n992|                            yield format\n993|                return selector_function\n994|            elif selector.type == GROUP:\n995|                selector_function = _build_selector_function(selector.selector)\n996|            elif selector.type == PICKFIRST:\n997|                fs = [_build_selector_function(s) for s in selector.selector]\n998|\n"
+        }
+      ]
+    }
+  ]
+}

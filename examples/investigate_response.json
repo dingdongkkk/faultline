@@ -1,0 +1,375 @@
+{
+ "contract_version": "0.2",
+ "investigation_id": "inv_7Q2K",
+ "status": "completed",
+ "stopping_reason": "planner_stopped",
+ "planner_requested": "local-model",
+ "fingerprint_id": "fp_3b1e",
+ "reproduced": {
+  "test_nodeid": "tests/test_cart.py::test_bulk_threshold[10]",
+  "baseline_run_id": "B1",
+  "signature": {
+   "exception_type": "builtins.AssertionError",
+   "crash_path": "tests/test_cart.py",
+   "crash_line": 14,
+   "test_line": 14,
+   "message_digest": "5be1c0d29a4f7e10",
+   "message_excerpt": "AssertionError: assert 1000 == 900"
+  },
+  "isolated": "reproduced"
+ },
+ "ranking": {
+  "policy": "target_focused_f1",
+  "total_failing": 1,
+  "total_passing": 7,
+  "unrelated_failing": 0,
+  "unrelated_failing_sample": [],
+  "excluded": {
+   "skipped": 1
+  },
+  "ranked_line_count": 9,
+  "unattributed_line_count": 14,
+  "setup_teardown_only_line_count": 2,
+  "tie_groups": [
+   {
+    "tie_group": "T1",
+    "rank": 1,
+    "size": 2,
+    "shown": 2,
+    "member_location_ids": [
+     "L1",
+     "L2"
+    ],
+    "distinct_count_pairs": [
+     [
+      1,
+      1
+     ]
+    ]
+   },
+   {
+    "tie_group": "T2",
+    "rank": 2,
+    "size": 4,
+    "shown": 1,
+    "member_location_ids": [
+     "L3"
+    ],
+    "distinct_count_pairs": [
+     [
+      1,
+      3
+     ]
+    ]
+   }
+  ],
+  "locations": [
+   {
+    "location_id": "L1",
+    "path": "shop/cart.py",
+    "line": 15,
+    "function_id": "F2",
+    "ef": 1,
+    "ep": 1,
+    "total_failing": 1,
+    "score": 0.7071,
+    "tie_group": "T1"
+   },
+   {
+    "location_id": "L2",
+    "path": "shop/cart.py",
+    "line": 19,
+    "function_id": "F3",
+    "ef": 1,
+    "ep": 1,
+    "total_failing": 1,
+    "score": 0.7071,
+    "tie_group": "T1"
+   },
+   {
+    "location_id": "L3",
+    "path": "shop/cart.py",
+    "line": 22,
+    "function_id": "F4",
+    "ef": 1,
+    "ep": 3,
+    "total_failing": 1,
+    "score": 0.5,
+    "tie_group": "T2"
+   }
+  ]
+ },
+ "excerpts": [
+  {
+   "excerpt_id": "S1",
+   "source": {
+    "path": "shop/cart.py",
+    "sha256": "9f2c000000000000000000000000000000000000000000000000000000000000",
+    "size": 812
+   },
+   "function_id": "F2",
+   "qualname": "bulk_rate",
+   "region": {
+    "start": 13,
+    "end": 16
+   },
+   "shown": [
+    {
+     "start": 13,
+     "end": 16
+    }
+   ],
+   "omitted": [],
+   "text": "  13| def bulk_rate(qty, tiers=TIERS):\n  14|     if qty >= min(tiers):\n  15|         return tiers[min(tiers)]\n  16|     return 0",
+   "truncated": false
+  }
+ ],
+ "observation_runs": [
+  {
+   "run_id": "R1",
+   "test_nodeid": "tests/test_cart.py::test_bulk_threshold[10]",
+   "role": "target",
+   "reproduction": "reproduced",
+   "call_outcome": "failed",
+   "probe_hits": {
+    "L1:before_line": {
+     "count": 1,
+     "exact": true
+    },
+    "L2:before_line": {
+     "count": 1,
+     "exact": true
+    }
+   },
+   "counts_exact": true,
+   "events_captured": 2,
+   "events_dropped": 0,
+   "truncation": [],
+   "unsupported_detected": [],
+   "duration_ms": 410,
+   "fingerprint_id": "fp_3b1e",
+   "sources": [
+    {
+     "path": "shop/cart.py",
+     "sha256": "9f2c000000000000000000000000000000000000000000000000000000000000",
+     "size": 812
+    }
+   ]
+  },
+  {
+   "run_id": "R2",
+   "test_nodeid": "tests/test_cart.py::test_bulk_threshold[12]",
+   "role": "comparator",
+   "reproduction": "not_applicable",
+   "call_outcome": "passed",
+   "probe_hits": {
+    "L1:before_line": {
+     "count": 1,
+     "exact": true
+    },
+    "L2:before_line": {
+     "count": 1,
+     "exact": true
+    }
+   },
+   "counts_exact": true,
+   "events_captured": 2,
+   "events_dropped": 0,
+   "truncation": [],
+   "unsupported_detected": [],
+   "duration_ms": 395,
+   "fingerprint_id": "fp_3b1e",
+   "sources": [
+    {
+     "path": "shop/cart.py",
+     "sha256": "9f2c000000000000000000000000000000000000000000000000000000000000",
+     "size": 812
+    }
+   ]
+  }
+ ],
+ "observations": [
+  {
+   "evidence_id": "O3",
+   "run_id": "R1",
+   "probe_id": "L1",
+   "path": "shop/cart.py",
+   "line": 15,
+   "event": "before_line",
+   "timing": {
+    "event_seq": 4,
+    "hit_ordinal": 1,
+    "t_ns": 182340
+   },
+   "frame_qualname": "bulk_rate",
+   "call_depth": 2,
+   "values": {
+    "qty": {
+     "kind": "int",
+     "value": 10
+    },
+    "tiers": {
+     "kind": "dict",
+     "length": 2,
+     "entries": [
+      [
+       {
+        "kind": "int",
+        "value": 10
+       },
+       {
+        "kind": "int",
+        "value": 10
+       }
+      ],
+      [
+       {
+        "kind": "int",
+        "value": 50
+       },
+       {
+        "kind": "int",
+        "value": 20
+       }
+      ]
+     ]
+    },
+    "customer": {
+     "kind": "opaque",
+     "type_name": "shop.models.Customer"
+    },
+    "api_token": {
+     "kind": "redacted",
+     "reason": "name_pattern"
+    }
+   }
+  }
+ ],
+ "comparisons": [
+  {
+   "evidence_id": "C1",
+   "failing_run_id": "R1",
+   "passing_run_id": "R2",
+   "comparator_reason": "covers_F2;jaccard=0.91;nodeid_order",
+   "aligned": [
+    {
+     "probe_id": "L1",
+     "event": "before_line",
+     "hit_ordinal": 1,
+     "alignment": "unambiguous",
+     "name": "qty",
+     "failing": {
+      "kind": "int",
+      "value": 10
+     },
+     "passing": {
+      "kind": "int",
+      "value": 12
+     },
+     "relation": "differs"
+    }
+   ],
+   "equal_count": 0,
+   "incomparable_count": 0,
+   "hit_count_differences": {},
+   "first_divergence_index": 0
+  }
+ ],
+ "unresolved": [
+  "T1 member L2 (shop/cart.py:19) not distinguished by observations"
+ ],
+ "planner_rounds": [
+  {
+   "round": 1,
+   "planner": "local-model",
+   "attempts": 2,
+   "rejected": [
+    "unknown_local:discount"
+   ],
+   "fallback_used": false,
+   "action": {
+    "action": "inspect_locations",
+    "location_ids": [
+     "L1",
+     "L2"
+    ],
+    "locals": [
+     "qty",
+     "tiers",
+     "customer",
+     "api_token"
+    ],
+    "test_ids": [
+     "t0",
+     "t1"
+    ],
+    "rationale": ""
+   },
+   "rationale_untrusted": "Both tied lines are on the bulk path; check qty at the threshold.",
+   "inference_ms": 1840,
+   "prompt_tokens": 1210,
+   "completion_tokens": 61
+  },
+  {
+   "round": 2,
+   "planner": "local-model",
+   "attempts": 1,
+   "rejected": [],
+   "fallback_used": false,
+   "action": {
+    "action": "stop",
+    "reason": "sufficient_evidence",
+    "rationale": ""
+   },
+   "inference_ms": 640,
+   "prompt_tokens": 1490,
+   "completion_tokens": 14
+  }
+ ],
+ "limitations": [
+  {
+   "code": "before_line_semantics",
+   "detail": "Line observations show locals before the line executes."
+  },
+  {
+   "code": "association_not_causation",
+   "detail": "Ochiai scores and divergences are associations, not proof of the root cause."
+  }
+ ],
+ "omissions": [
+  {
+   "kind": "tie_group_members",
+   "count": 3,
+   "evidence_ids": [
+    "T2"
+   ]
+  },
+  {
+   "kind": "excerpt",
+   "count": 1,
+   "evidence_ids": [
+    "S2"
+   ]
+  },
+  {
+   "kind": "observation_in_comparison",
+   "count": 1,
+   "evidence_ids": [
+    "O4"
+   ]
+  }
+ ],
+ "metrics": {
+  "response_bytes": 5290,
+  "response_tokens_estimate": 1764,
+  "token_estimate_method": "utf8_bytes_div_3",
+  "budget_tokens": 2000,
+  "wall_ms": 6120,
+  "coverage_run_ms": 1980,
+  "observation_ms": 805,
+  "planner_ms": 2480,
+  "rounds": 2,
+  "planner_retries": 1,
+  "planner_fallbacks": 0
+ }
+}

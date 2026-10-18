@@ -1,0 +1,207 @@
+{
+  "$defs": {
+    "CompareObservations": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "const": "compare_observations",
+          "title": "Action",
+          "type": "string"
+        },
+        "failing_run_id": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+          "title": "Failing Run Id",
+          "type": "string"
+        },
+        "passing_run_id": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+          "title": "Passing Run Id",
+          "type": "string"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 300,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "failing_run_id",
+        "passing_run_id"
+      ],
+      "title": "CompareObservations",
+      "type": "object"
+    },
+    "InspectFunction": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "const": "inspect_function",
+          "title": "Action",
+          "type": "string"
+        },
+        "function_id": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+          "title": "Function Id",
+          "type": "string"
+        },
+        "test_ids": {
+          "items": {
+            "maxLength": 32,
+            "minLength": 1,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Test Ids",
+          "type": "array"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 300,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "function_id",
+        "test_ids"
+      ],
+      "title": "InspectFunction",
+      "type": "object"
+    },
+    "InspectLocations": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "const": "inspect_locations",
+          "title": "Action",
+          "type": "string"
+        },
+        "location_ids": {
+          "items": {
+            "maxLength": 32,
+            "minLength": 1,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Location Ids",
+          "type": "array"
+        },
+        "locals": {
+          "items": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Locals",
+          "type": "array"
+        },
+        "test_ids": {
+          "items": {
+            "maxLength": 32,
+            "minLength": 1,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Test Ids",
+          "type": "array"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 300,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "location_ids",
+        "test_ids"
+      ],
+      "title": "InspectLocations",
+      "type": "object"
+    },
+    "Stop": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "const": "stop",
+          "title": "Action",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "sufficient_evidence",
+            "no_useful_action",
+            "evidence_contradictory"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 300,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "reason"
+      ],
+      "title": "Stop",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What a planner must return. Used as the model's JSON schema.",
+  "properties": {
+    "next": {
+      "discriminator": {
+        "mapping": {
+          "compare_observations": "#/$defs/CompareObservations",
+          "inspect_function": "#/$defs/InspectFunction",
+          "inspect_locations": "#/$defs/InspectLocations",
+          "stop": "#/$defs/Stop"
+        },
+        "propertyName": "action"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/InspectLocations"
+        },
+        {
+          "$ref": "#/$defs/InspectFunction"
+        },
+        {
+          "$ref": "#/$defs/CompareObservations"
+        },
+        {
+          "$ref": "#/$defs/Stop"
+        }
+      ],
+      "title": "Next"
+    }
+  },
+  "required": [
+    "next"
+  ],
+  "title": "PlannerActionEnvelope",
+  "type": "object"
+}

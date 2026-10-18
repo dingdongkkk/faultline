@@ -1,0 +1,434 @@
+{
+  "$defs": {
+    "CapturedFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "function": {
+          "title": "Function",
+          "type": "string"
+        },
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/SnapshotValue"
+          },
+          "title": "Values",
+          "type": "object"
+        }
+      },
+      "required": [
+        "path",
+        "line",
+        "function",
+        "values"
+      ],
+      "title": "CapturedFrame",
+      "type": "object"
+    },
+    "FailureSignature": {
+      "additionalProperties": false,
+      "description": "What must match for an observation run to count as reproducing.",
+      "properties": {
+        "exception_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exception Type"
+        },
+        "crash_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crash Path"
+        },
+        "crash_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crash Line"
+        },
+        "test_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Test Line"
+        },
+        "message_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message Digest"
+        },
+        "message_excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message Excerpt"
+        }
+      },
+      "title": "FailureSignature",
+      "type": "object"
+    },
+    "SnapshotValue": {
+      "additionalProperties": false,
+      "description": "Bounded, primitive-only copy of a runtime value.\n\nOnly exact built-in types are expanded. Subclasses of built-ins and every\nother object are ``opaque``: type name only, read through type\ndescriptors, never through repr/str/properties/iteration of user types.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "none",
+            "bool",
+            "int",
+            "float",
+            "str",
+            "bytes",
+            "list",
+            "tuple",
+            "dict",
+            "set",
+            "frozenset",
+            "opaque",
+            "redacted",
+            "cycle",
+            "depth_limit",
+            "unavailable"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "type_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type Name"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/SnapshotValue"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Items"
+        },
+        "entries": {
+          "anyOf": [
+            {
+              "items": {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "$ref": "#/$defs/SnapshotValue"
+                  },
+                  {
+                    "$ref": "#/$defs/SnapshotValue"
+                  }
+                ],
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entries"
+        },
+        "truncated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncated"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "SnapshotValue",
+      "type": "object"
+    },
+    "ValueChange": {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "title": "Seq",
+          "type": "integer"
+        },
+        "frame": {
+          "title": "Frame",
+          "type": "integer"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "function": {
+          "title": "Function",
+          "type": "string"
+        },
+        "after_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "After Line"
+        },
+        "observed_line": {
+          "title": "Observed Line",
+          "type": "integer"
+        },
+        "variable": {
+          "title": "Variable",
+          "type": "string"
+        },
+        "before": {
+          "$ref": "#/$defs/SnapshotValue"
+        },
+        "after": {
+          "$ref": "#/$defs/SnapshotValue"
+        }
+      },
+      "required": [
+        "seq",
+        "frame",
+        "path",
+        "function",
+        "observed_line",
+        "variable",
+        "before",
+        "after"
+      ],
+      "title": "ValueChange",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "capture_id": {
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "failed",
+        "passed",
+        "incomplete",
+        "timed_out",
+        "workspace_changed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "reused": {
+      "title": "Reused",
+      "type": "boolean"
+    },
+    "failing_test": {
+      "title": "Failing Test",
+      "type": "string"
+    },
+    "fingerprint_id": {
+      "title": "Fingerprint Id",
+      "type": "string"
+    },
+    "signature": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FailureSignature"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "frames": {
+      "items": {
+        "$ref": "#/$defs/CapturedFrame"
+      },
+      "title": "Frames",
+      "type": "array"
+    },
+    "changes": {
+      "items": {
+        "$ref": "#/$defs/ValueChange"
+      },
+      "title": "Changes",
+      "type": "array"
+    },
+    "omitted_changes": {
+      "default": 0,
+      "title": "Omitted Changes",
+      "type": "integer"
+    },
+    "selection": {
+      "default": "recent_failing_frames",
+      "enum": [
+        "focused_variable",
+        "none_origin_candidates",
+        "recent_failing_frames"
+      ],
+      "title": "Selection",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "artifact_dir": {
+      "title": "Artifact Dir",
+      "type": "string"
+    },
+    "response_bytes": {
+      "default": 0,
+      "title": "Response Bytes",
+      "type": "integer"
+    },
+    "tokens_estimate": {
+      "default": 0,
+      "title": "Tokens Estimate",
+      "type": "integer"
+    },
+    "budget_scope": {
+      "default": "json_payload",
+      "enum": [
+        "json_payload",
+        "mcp_result"
+      ],
+      "title": "Budget Scope",
+      "type": "string"
+    },
+    "token_method": {
+      "const": "utf8_bytes_div_3",
+      "default": "utf8_bytes_div_3",
+      "title": "Token Method",
+      "type": "string"
+    }
+  },
+  "required": [
+    "capture_id",
+    "status",
+    "reused",
+    "failing_test",
+    "fingerprint_id",
+    "limitations",
+    "artifact_dir"
+  ],
+  "title": "CaptureResponse",
+  "type": "object"
+}

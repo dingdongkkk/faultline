@@ -1,0 +1,61 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "A",
+ "trial": 1,
+ "dry_run": null,
+ "started_at": "2026-10-18T11:04:50+00:00",
+ "harness_wall_s": 26.01,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v4-search-neutral-deferred",
+ "model_requested": "claude-sonnet-5-5",
+ "agent": {
+  "events": 31,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "hooks": {
+   "events": 0,
+   "context_bytes": 0,
+   "output_bytes": 0,
+   "context_excerpt": null
+  },
+  "tool_calls": {
+   "Bash": 6,
+   "Edit": 1
+  },
+  "tool_calls_total": 7,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 8,
+  "duration_ms": 24407,
+  "duration_api_ms": 20101,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "permission_denials": 1,
+  "usage": {
+   "input_tokens": 14,
+   "cache_creation_input_tokens": 23811,
+   "cache_read_input_tokens": 274023,
+   "output_tokens": 2175
+  },
+  "final_text": "I fixed the failing format-selection test. All 14 tests in `test/test_YoutubeDL.py` now pass.\n\nIn `_parse_format_selection` in `youtube_dl/YoutubeDL.py`, the `/` branch (fallback choice) appended the new selector to the list and set `current_selector = None`. A following `,` then appended that `None`. A spec like `bestvideo/best,bestaudio` therefore crashed with `AttributeError: 'NoneType' object has no attribute 'type'`.\n\nThe `/` branch now sets `current_selector` to the fallback selector, so the `,` or end of the spec appends it normally."
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ }
+}

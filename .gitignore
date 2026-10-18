@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage*
+dist/
+build/
+*.egg-info/
+# Model weights are never committed.
+*.gguf
+models/
+# Local Claude Code settings (machine-specific absolute paths) and installed project skill.
+.claude/
+# Raw Claude event logs: contain local plugin lists, memory paths and session IDs.
+# Per-session JSON records and eval/export/*.csv carry all reported numbers.
+eval/results/**/*.events.jsonl
+.DS_Store

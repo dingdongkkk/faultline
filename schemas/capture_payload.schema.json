@@ -1,0 +1,423 @@
+{
+  "$defs": {
+    "CapturedFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "function": {
+          "title": "Function",
+          "type": "string"
+        },
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/SnapshotValue"
+          },
+          "title": "Values",
+          "type": "object"
+        }
+      },
+      "required": [
+        "path",
+        "line",
+        "function",
+        "values"
+      ],
+      "title": "CapturedFrame",
+      "type": "object"
+    },
+    "CapturedPhase": {
+      "additionalProperties": false,
+      "properties": {
+        "nodeid": {
+          "title": "Nodeid",
+          "type": "string"
+        },
+        "phase": {
+          "enum": [
+            "setup",
+            "call",
+            "teardown"
+          ],
+          "title": "Phase",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "xfail": {
+          "title": "Xfail",
+          "type": "string"
+        },
+        "frames": {
+          "items": {
+            "$ref": "#/$defs/CapturedFrame"
+          },
+          "title": "Frames",
+          "type": "array"
+        },
+        "signature": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FailureSignature"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "report": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Report"
+        }
+      },
+      "required": [
+        "nodeid",
+        "phase",
+        "outcome",
+        "xfail",
+        "frames"
+      ],
+      "title": "CapturedPhase",
+      "type": "object"
+    },
+    "FailureSignature": {
+      "additionalProperties": false,
+      "description": "What must match for an observation run to count as reproducing.",
+      "properties": {
+        "exception_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exception Type"
+        },
+        "crash_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crash Path"
+        },
+        "crash_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crash Line"
+        },
+        "test_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Test Line"
+        },
+        "message_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message Digest"
+        },
+        "message_excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message Excerpt"
+        }
+      },
+      "title": "FailureSignature",
+      "type": "object"
+    },
+    "SnapshotValue": {
+      "additionalProperties": false,
+      "description": "Bounded, primitive-only copy of a runtime value.\n\nOnly exact built-in types are expanded. Subclasses of built-ins and every\nother object are ``opaque``: type name only, read through type\ndescriptors, never through repr/str/properties/iteration of user types.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "none",
+            "bool",
+            "int",
+            "float",
+            "str",
+            "bytes",
+            "list",
+            "tuple",
+            "dict",
+            "set",
+            "frozenset",
+            "opaque",
+            "redacted",
+            "cycle",
+            "depth_limit",
+            "unavailable"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "type_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type Name"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/SnapshotValue"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Items"
+        },
+        "entries": {
+          "anyOf": [
+            {
+              "items": {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "$ref": "#/$defs/SnapshotValue"
+                  },
+                  {
+                    "$ref": "#/$defs/SnapshotValue"
+                  }
+                ],
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entries"
+        },
+        "truncated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncated"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "SnapshotValue",
+      "type": "object"
+    },
+    "ValueChange": {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "title": "Seq",
+          "type": "integer"
+        },
+        "frame": {
+          "title": "Frame",
+          "type": "integer"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "function": {
+          "title": "Function",
+          "type": "string"
+        },
+        "after_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "After Line"
+        },
+        "observed_line": {
+          "title": "Observed Line",
+          "type": "integer"
+        },
+        "variable": {
+          "title": "Variable",
+          "type": "string"
+        },
+        "before": {
+          "$ref": "#/$defs/SnapshotValue"
+        },
+        "after": {
+          "$ref": "#/$defs/SnapshotValue"
+        }
+      },
+      "required": [
+        "seq",
+        "frame",
+        "path",
+        "function",
+        "observed_line",
+        "variable",
+        "before",
+        "after"
+      ],
+      "title": "ValueChange",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "reports": {
+      "items": {
+        "$ref": "#/$defs/CapturedPhase"
+      },
+      "title": "Reports",
+      "type": "array"
+    },
+    "exitstatus": {
+      "title": "Exitstatus",
+      "type": "integer"
+    },
+    "history": {
+      "items": {
+        "$ref": "#/$defs/ValueChange"
+      },
+      "title": "History",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "reports",
+    "exitstatus",
+    "history",
+    "limitations"
+  ],
+  "title": "CapturePayload",
+  "type": "object"
+}

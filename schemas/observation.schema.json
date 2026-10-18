@@ -1,0 +1,252 @@
+{
+  "$defs": {
+    "ObservationEvent": {
+      "enum": [
+        "before_line",
+        "call",
+        "return",
+        "exception",
+        "unwind",
+        "exit_ambiguous"
+      ],
+      "title": "ObservationEvent",
+      "type": "string"
+    },
+    "ObservationTiming": {
+      "additionalProperties": false,
+      "properties": {
+        "event_seq": {
+          "title": "Event Seq",
+          "type": "integer"
+        },
+        "hit_ordinal": {
+          "title": "Hit Ordinal",
+          "type": "integer"
+        },
+        "t_ns": {
+          "title": "T Ns",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "event_seq",
+        "hit_ordinal",
+        "t_ns"
+      ],
+      "title": "ObservationTiming",
+      "type": "object"
+    },
+    "SnapshotValue": {
+      "additionalProperties": false,
+      "description": "Bounded, primitive-only copy of a runtime value.\n\nOnly exact built-in types are expanded. Subclasses of built-ins and every\nother object are ``opaque``: type name only, read through type\ndescriptors, never through repr/str/properties/iteration of user types.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "none",
+            "bool",
+            "int",
+            "float",
+            "str",
+            "bytes",
+            "list",
+            "tuple",
+            "dict",
+            "set",
+            "frozenset",
+            "opaque",
+            "redacted",
+            "cycle",
+            "depth_limit",
+            "unavailable"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "type_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type Name"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/SnapshotValue"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Items"
+        },
+        "entries": {
+          "anyOf": [
+            {
+              "items": {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "$ref": "#/$defs/SnapshotValue"
+                  },
+                  {
+                    "$ref": "#/$defs/SnapshotValue"
+                  }
+                ],
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entries"
+        },
+        "truncated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncated"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "SnapshotValue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "evidence_id": {
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "probe_id": {
+      "title": "Probe Id",
+      "type": "string"
+    },
+    "path": {
+      "title": "Path",
+      "type": "string"
+    },
+    "line": {
+      "title": "Line",
+      "type": "integer"
+    },
+    "event": {
+      "$ref": "#/$defs/ObservationEvent"
+    },
+    "timing": {
+      "$ref": "#/$defs/ObservationTiming"
+    },
+    "frame_qualname": {
+      "title": "Frame Qualname",
+      "type": "string"
+    },
+    "call_depth": {
+      "title": "Call Depth",
+      "type": "integer"
+    },
+    "values": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SnapshotValue"
+      },
+      "title": "Values",
+      "type": "object"
+    },
+    "exception_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Exception Type"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "run_id",
+    "probe_id",
+    "path",
+    "line",
+    "event",
+    "timing",
+    "frame_qualname",
+    "call_depth",
+    "values"
+  ],
+  "title": "Observation",
+  "type": "object"
+}

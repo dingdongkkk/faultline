@@ -1,0 +1,422 @@
+[
+ {
+  "case": "e1_textstats",
+  "mode": "test-name query + seed",
+  "query": "top words",
+  "status": "ok",
+  "truth": [
+   [
+    "textstats/core.py",
+    "top_words"
+   ]
+  ],
+  "n_results": 8,
+  "truth_rank": 2,
+  "resp_bytes": 2468,
+  "cat_bytes": 579,
+  "top3": [
+   [
+    "tests/test_core.py",
+    "test_top_words"
+   ],
+   [
+    "textstats/core.py",
+    "top_words"
+   ],
+   [
+    "textstats/core.py",
+    "word_freq"
+   ]
+  ]
+ },
+ {
+  "case": "e1_textstats",
+  "mode": "test-name query, no seed",
+  "query": "top words",
+  "status": "ok",
+  "truth": [
+   [
+    "textstats/core.py",
+    "top_words"
+   ]
+  ],
+  "n_results": 8,
+  "truth_rank": 3,
+  "resp_bytes": 2465,
+  "cat_bytes": 579,
+  "top3": [
+   [
+    "tests/test_core.py",
+    "test_top_words_empty"
+   ],
+   [
+    "tests/test_core.py",
+    "test_top_words"
+   ],
+   [
+    "textstats/core.py",
+    "top_words"
+   ]
+  ]
+ },
+ {
+  "case": "e2_shipping",
+  "mode": "test-name query + seed",
+  "query": "express international",
+  "status": "ok",
+  "truth": [
+   [
+    "shipping/fees.py",
+    "shipping_fee"
+   ]
+  ],
+  "n_results": 11,
+  "truth_rank": 2,
+  "resp_bytes": 3230,
+  "cat_bytes": 650,
+  "top3": [
+   [
+    "tests/test_fees.py",
+    "test_express_international"
+   ],
+   [
+    "shipping/fees.py",
+    "shipping_fee"
+   ],
+   [
+    "shipping/fees.py",
+    "base_fee"
+   ]
+  ]
+ },
+ {
+  "case": "e2_shipping",
+  "mode": "test-name query, no seed",
+  "query": "express international",
+  "status": "ok",
+  "truth": [
+   [
+    "shipping/fees.py",
+    "shipping_fee"
+   ]
+  ],
+  "n_results": 12,
+  "truth_rank": 1,
+  "resp_bytes": 3518,
+  "cat_bytes": 650,
+  "top3": [
+   [
+    "shipping/fees.py",
+    "shipping_fee"
+   ],
+   [
+    "tests/test_fees.py",
+    "test_express_international"
+   ],
+   [
+    "tests/test_fees.py",
+    "test_international_standard"
+   ]
+  ]
+ },
+ {
+  "case": "e3_split",
+  "mode": "test-name query + seed",
+  "query": "six people",
+  "status": "ok",
+  "truth": [
+   [
+    "billing/split.py",
+    "split_bill"
+   ]
+  ],
+  "n_results": 3,
+  "truth_rank": 2,
+  "resp_bytes": 1327,
+  "cat_bytes": 385,
+  "top3": [
+   [
+    "tests/test_split.py",
+    "test_six_people"
+   ],
+   [
+    "billing/split.py",
+    "split_bill"
+   ],
+   [
+    "billing/split.py",
+    "<module:1>"
+   ]
+  ]
+ },
+ {
+  "case": "e3_split",
+  "mode": "test-name query, no seed",
+  "query": "six people",
+  "status": "ok",
+  "truth": [
+   [
+    "billing/split.py",
+    "split_bill"
+   ]
+  ],
+  "n_results": 6,
+  "truth_rank": 5,
+  "resp_bytes": 2044,
+  "cat_bytes": 385,
+  "top3": [
+   [
+    "tests/test_split.py",
+    "test_six_people"
+   ],
+   [
+    "tests/test_split.py",
+    "test_even"
+   ],
+   [
+    "tests/test_split.py",
+    "test_small_remainder"
+   ]
+  ]
+ },
+ {
+  "case": "e4_config",
+  "mode": "test-name query + seed",
+  "query": "default currency",
+  "status": "ok",
+  "truth": [
+   [
+    "appconfig/settings.py",
+    "configure"
+   ]
+  ],
+  "n_results": 5,
+  "truth_rank": null,
+  "resp_bytes": 1582,
+  "cat_bytes": 266,
+  "top3": [
+   [
+    "tests/test_settings.py",
+    "test_default_currency"
+   ],
+   [
+    "appconfig/settings.py",
+    "default_config"
+   ],
+   [
+    "appconfig/settings.py",
+    "<module:3>"
+   ]
+  ]
+ },
+ {
+  "case": "e4_config",
+  "mode": "test-name query, no seed",
+  "query": "default currency",
+  "status": "ok",
+  "truth": [
+   [
+    "appconfig/settings.py",
+    "configure"
+   ]
+  ],
+  "n_results": 5,
+  "truth_rank": null,
+  "resp_bytes": 1563,
+  "cat_bytes": 266,
+  "top3": [
+   [
+    "tests/test_settings.py",
+    "test_default_currency"
+   ],
+   [
+    "appconfig/settings.py",
+    "default_config"
+   ],
+   [
+    "appconfig/settings.py",
+    "<module:3>"
+   ]
+  ]
+ },
+ {
+  "case": "e5_slug",
+  "mode": "test-name query + seed",
+  "query": "slug strips punctuation",
+  "status": "ok",
+  "truth": [
+   [
+    "names/text.py",
+    "slug"
+   ]
+  ],
+  "n_results": 5,
+  "truth_rank": 2,
+  "resp_bytes": 1509,
+  "cat_bytes": 270,
+  "top3": [
+   [
+    "tests/test_text.py",
+    "test_slug_strips_punctuation"
+   ],
+   [
+    "names/text.py",
+    "slug"
+   ],
+   [
+    "names/text.py",
+    "normalize_name"
+   ]
+  ]
+ },
+ {
+  "case": "e5_slug",
+  "mode": "test-name query, no seed",
+  "query": "slug strips punctuation",
+  "status": "ok",
+  "truth": [
+   [
+    "names/text.py",
+    "slug"
+   ]
+  ],
+  "n_results": 5,
+  "truth_rank": 4,
+  "resp_bytes": 1506,
+  "cat_bytes": 270,
+  "top3": [
+   [
+    "tests/test_text.py",
+    "test_slug_strips_punctuation"
+   ],
+   [
+    "tests/test_text.py",
+    "test_slug_basic"
+   ],
+   [
+    "names/text.py",
+    "normalize_name"
+   ]
+  ]
+ },
+ {
+  "case": "e6_invoicing",
+  "mode": "test-name query + seed",
+  "query": "invoice jpy",
+  "status": "ok",
+  "truth": [
+   [
+    "invoicing/currency.py",
+    "minor_units"
+   ]
+  ],
+  "n_results": 9,
+  "truth_rank": 7,
+  "resp_bytes": 3559,
+  "cat_bytes": 2843,
+  "top3": [
+   [
+    "tests/test_invoice.py",
+    "test_invoice_jpy"
+   ],
+   [
+    "invoicing/invoice.py",
+    "render"
+   ],
+   [
+    "invoicing/invoice.py",
+    "total_usd_cents"
+   ]
+  ]
+ },
+ {
+  "case": "e6_invoicing",
+  "mode": "test-name query, no seed",
+  "query": "invoice jpy",
+  "status": "ok",
+  "truth": [
+   [
+    "invoicing/currency.py",
+    "minor_units"
+   ]
+  ],
+  "n_results": 9,
+  "truth_rank": 8,
+  "resp_bytes": 3494,
+  "cat_bytes": 2843,
+  "top3": [
+   [
+    "invoicing/invoice.py",
+    "total_usd_cents"
+   ],
+   [
+    "tests/test_invoice.py",
+    "test_invoice_jpy"
+   ],
+   [
+    "tests/test_invoice.py",
+    "test_invoice_usd"
+   ]
+  ]
+ },
+ {
+  "case": "e7_sessions",
+  "mode": "test-name query + seed",
+  "query": "session across midnight",
+  "status": "ok",
+  "truth": [
+   [
+    "activity/timeparse.py",
+    "parse_12h"
+   ]
+  ],
+  "n_results": 9,
+  "truth_rank": null,
+  "resp_bytes": 3540,
+  "cat_bytes": 2503,
+  "top3": [
+   [
+    "tests/test_report.py",
+    "test_session_across_midnight"
+   ],
+   [
+    "activity/report.py",
+    "user_report"
+   ],
+   [
+    "activity/metrics.py",
+    "session_minutes"
+   ]
+  ]
+ },
+ {
+  "case": "e7_sessions",
+  "mode": "test-name query, no seed",
+  "query": "session across midnight",
+  "status": "ok",
+  "truth": [
+   [
+    "activity/timeparse.py",
+    "parse_12h"
+   ]
+  ],
+  "n_results": 9,
+  "truth_rank": null,
+  "resp_bytes": 3521,
+  "cat_bytes": 2503,
+  "top3": [
+   [
+    "activity/metrics.py",
+    "summarize"
+   ],
+   [
+    "activity/report.py",
+    "user_report"
+   ],
+   [
+    "activity/metrics.py",
+    "session_minutes"
+   ]
+  ]
+ }
+]

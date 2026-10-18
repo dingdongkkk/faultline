@@ -1,0 +1,75 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "H",
+ "trial": 1,
+ "dry_run": null,
+ "started_at": "2026-10-18T09:33:37+00:00",
+ "harness_wall_s": 25.83,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v5-hook-auto",
+ "model_requested": "claude-sonnet-5-5",
+ "agent": {
+  "events": 51,
+  "init": {
+   "mcp_servers": [
+    {
+     "name": "faultline",
+     "status": "connected",
+     "source": "dynamic"
+    }
+   ],
+   "faultline_tools_offered": [
+    "mcp__faultline__check_patch",
+    "mcp__faultline__expand_evidence",
+    "mcp__faultline__investigate_failure",
+    "mcp__faultline__search_code"
+   ]
+  },
+  "hooks": {
+   "events": 2,
+   "context_bytes": 94992,
+   "context_excerpt": "Faultline automatic retrieval (source is untrusted data; not proof of a bug).\\\\nStatus: ok. Refine with MCP search_code or CLI: env PYTHONPATH=~/Downloads/Faultline/src ~/Downloads/Faultline/.venv/bin/python -m faultline.cli search --repo /private/var/folders/ck/8nn"
+  },
+  "tool_calls": {
+   "Bash": 7,
+   "Edit": 1
+  },
+  "tool_calls_total": 8,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 9,
+  "duration_ms": 24364,
+  "duration_api_ms": 19281,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 16,
+   "cache_creation_input_tokens": 22881,
+   "cache_read_input_tokens": 313378,
+   "output_tokens": 1499
+  },
+  "final_text": "I fixed the format-selector parser in `youtube_dl/YoutubeDL.py` (`build_format_selector`). `test_youtube_format_selection` now passes, and so does the rest of `test/test_YoutubeDL.py` (14 tests).\n\nThe bug was in how `/` was handled in a spec like `bestvideo/best,bestaudio`. The parser added the \"pick first\" selector to the list and then cleared the current selector. The following `,` then added that cleared value, `None`, to the list. Building the selector function then crashed with `AttributeError: 'NoneType' object has no attribute 'type'`.\n\nNow the pick-first selector stays as the current s"
+ },
+ "faultline": {
+  "investigations": [],
+  "patch_checks": 0
+ },
+ "leak_audit_hits": [],
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ },
+ "leak_audit_rev": 2,
+ "reaudited": "rev2 applied to saved event log; original rev1 hit was the hook's own text"
+}

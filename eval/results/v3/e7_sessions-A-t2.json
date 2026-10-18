@@ -1,0 +1,53 @@
+{
+ "case": "e7_sessions",
+ "category": "multi_module_misleading_symptom",
+ "condition": "A",
+ "trial": 2,
+ "dry_run": null,
+ "started_at": "2026-10-18T08:18:00+00:00",
+ "harness_wall_s": 20.46,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "3cd4188e57d6f8b533b29db698f39ad0f769c66c4a810112d74ab738c92db8a1",
+ "protocol": "v3-neutral-alwaysload",
+ "agent": {
+  "events": 16,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "tool_calls": {
+   "Bash": 3,
+   "Edit": 1
+  },
+  "tool_calls_total": 4,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 5,
+  "duration_ms": 19240,
+  "duration_api_ms": 16569,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 8,
+   "cache_creation_input_tokens": 17744,
+   "cache_read_input_tokens": 139542,
+   "output_tokens": 936
+  },
+  "final_text": "I fixed a time-parsing bug in `activity/timeparse.py`, and the full test suite now passes (7 tests).\n\n**The bug:** `parse_12h` read \"12:xx AM\" as hour 12 (noon) instead of hour 0 (midnight). So the 12:10 AM and 12:20 AM events on March 2 were placed at midday. That left a gap of more than 30 minutes after 11:55 PM, which split one session into two.\n\n**The fix:** the parser now sets the hour to 0 when it sees 12 AM, alongside the existing rule that adds 12 to PM hours. The overnight events now form one 40-minute session, which is what the test expects. I didn't change any test files."
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "activity/timeparse.py | 2 ++\n 1 file changed, 2 insertions(+)"
+ }
+}

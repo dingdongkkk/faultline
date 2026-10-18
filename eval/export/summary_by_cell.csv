@@ -1,0 +1,37 @@
+batch,model,case,condition,protocol,n,correct,turns,mean_input_plus_cache,median_input_plus_cache,min,max,faultline_mcp_calls
+e8,claude-opus-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,7 6 6,219725,205109,203967,250100,0
+e8,claude-opus-5-5,e8_ytdl,C,v4-search-neutral-deferred,3,3,8 6 6,235092,206241,206228,292806,0
+pilot,claude-opus-5-5,e2_shipping,C,,1,1,5,156161,156161,156161,156161,0
+pilot,claude-opus-5-5,e2_shipping,C,v2-faultline-first,1,1,7,207495,207495,207495,207495,2
+sonnet,claude-sonnet-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,9 8 9,319549,330318,289632,338697,0
+sonnet,claude-sonnet-5-5,e8_ytdl,H,v5-hook-auto,3,3,9 9 10,351013,336275,336247,380518,0
+sonnet-v6,claude-sonnet-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,10 10 9,365235,379113,336192,380400,0
+sonnet-v6,claude-sonnet-5-5,e8_ytdl,H,v6-hook-evidence,3,3,5 8 6,224399,211796,162804,298597,0
+v3,claude-opus-5-5,e6_invoicing,A,v3-neutral-alwaysload,3,3,5 5 5,158692,158436,158397,159242,0
+v3,claude-opus-5-5,e6_invoicing,C,v3-neutral-alwaysload,3,3,5 5 5,160692,160725,160598,160754,0
+v3,claude-opus-5-5,e7_sessions,A,v3-neutral-alwaysload,3,3,5 5 5,157262,157294,157153,157338,0
+v3,claude-opus-5-5,e7_sessions,C,v3-neutral-alwaysload,3,3,6 5 5,172491,159797,158851,198826,0
+v4,claude-opus-5-5,e6_invoicing,A,v4-search-neutral-deferred,1,1,5,158386,158386,158386,158386,0
+v4,claude-opus-5-5,e6_invoicing,C,v4-search-neutral-deferred,3,3,5 5 5,159293,159437,158977,159466,0
+v4,claude-opus-5-5,e7_sessions,A,v4-search-neutral-deferred,1,1,5,157736,157736,157736,157736,0
+v4,claude-opus-5-5,e7_sessions,C,v4-search-neutral-deferred,3,3,5 6 8,197791,196985,158365,238022,0
+v6-confirm/opus-5-5,claude-opus-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,6 6 6,204184,205037,202388,205128,0
+v6-confirm/opus-5-5,claude-opus-5-5,e8_ytdl,H,v6-hook-evidence,3,3,5 5 5,160383,160479,159982,160689,0
+v6-confirm/sonnet-5-5,claude-sonnet-5-5,e6_invoicing,A,v4-search-neutral-deferred,3,3,9 7 9,157743,158012,156949,158267,0
+v6-confirm/sonnet-5-5,claude-sonnet-5-5,e6_invoicing,H,v6-hook-evidence,3,3,7 6 7,210548,197066,196848,237731,0
+v6-confirm/sonnet-5-5,claude-sonnet-5-5,e7_sessions,A,v4-search-neutral-deferred,3,3,9 10 6,169987,156903,155997,197062,0
+v6-confirm/sonnet-5-5,claude-sonnet-5-5,e7_sessions,H,v6-hook-evidence,3,3,10 6 10,250720,277239,197586,277335,0
+v6-confirm/sonnet-5-5,claude-sonnet-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,8 8 10,321649,293323,286048,385575,0
+v6-confirm/sonnet-5-5,claude-sonnet-5-5,e8_ytdl,H,v6-hook-evidence,3,3,7 7 6,237053,247361,211996,251803,0
+v7-silence,claude-sonnet-5-5,e6_invoicing,A,v4-search-neutral-deferred,3,3,6 11 8,195901,196469,156038,235197,0
+v7-silence,claude-sonnet-5-5,e6_invoicing,H,v7-hook-silence,3,3,7 9 7,158319,158316,158168,158474,0
+v7-silence,claude-sonnet-5-5,e7_sessions,A,v4-search-neutral-deferred,3,3,7 7 6,169811,156418,156047,196968,0
+v7-silence,claude-sonnet-5-5,e7_sessions,H,v7-hook-silence,3,3,9 10 11,184807,197598,157664,199158,0
+v8-capture/opus-5-5,claude-opus-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,8 7 6,249558,250146,205958,292570,0
+v8-capture/opus-5-5,claude-opus-5-5,e8_ytdl,H,v8-capture-hook,3,3,5 5 5,160795,161045,160246,161095,0
+v8-capture/sonnet-5-5,claude-sonnet-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,11 8 9,330465,330389,285452,375554,0
+v8-capture/sonnet-5-5,claude-sonnet-5-5,e8_ytdl,H,v8-capture-hook,3,3,6 6 8,237494,211268,203648,297565,0
+v9-auto-capture/opus-5-5,claude-opus-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,6 6 6,204934,204907,204895,205001,0
+v9-auto-capture/opus-5-5,claude-opus-5-5,e8_ytdl,H,v9-auto-capture,3,3,5 5 5,160462,160379,160326,160682,0
+v9-auto-capture/sonnet-5-5,claude-sonnet-5-5,e8_ytdl,A,v4-search-neutral-deferred,3,3,8 10 8,324920,297848,291265,385648,0
+v9-auto-capture/sonnet-5-5,claude-sonnet-5-5,e8_ytdl,H,v9-auto-capture,3,3,7 6 7,234299,245351,204686,252861,0

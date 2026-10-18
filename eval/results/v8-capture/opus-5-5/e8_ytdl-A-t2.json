@@ -1,0 +1,62 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "A",
+ "trial": 2,
+ "dry_run": null,
+ "started_at": "2026-10-18T10:52:24+00:00",
+ "harness_wall_s": 32.31,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v4-search-neutral-deferred",
+ "model_requested": "claude-opus-5-5",
+ "agent": {
+  "events": 24,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "hooks": {
+   "events": 0,
+   "context_bytes": 0,
+   "output_bytes": 0,
+   "context_excerpt": null
+  },
+  "tool_calls": {
+   "Bash": 4,
+   "Read": 1,
+   "Edit": 1
+  },
+  "tool_calls_total": 6,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 7,
+  "duration_ms": 31150,
+  "duration_api_ms": 26901,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 12,
+   "cache_creation_input_tokens": 21894,
+   "cache_read_input_tokens": 228240,
+   "output_tokens": 1609
+  },
+  "final_text": "I fixed the bug and the test now passes, along with all 14 tests in `test/test_YoutubeDL.py`.\n\n**The bug:** it was in the format-spec parser in `youtube_dl/YoutubeDL.py` (`_parse_format_selection`). When the parser read a `/` (meaning \"use this format, or fall back to that one\"), it added the combined choice to the list straight away and then cleared the current selector. A spec like `bestvideo/best,bestaudio` has a `,` right after the fallback, and the `,` adds the current selector to the list, which by then was empty (`None`). That crashed with `AttributeError: 'NoneType' object has no attri"
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ }
+}

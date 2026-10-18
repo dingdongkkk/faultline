@@ -1,0 +1,145 @@
+{
+  "$defs": {
+    "SearchHit": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "symbol": {
+          "title": "Symbol",
+          "type": "string"
+        },
+        "start": {
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "title": "End",
+          "type": "integer"
+        },
+        "reason": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reason",
+          "type": "array"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "truncated": {
+          "title": "Truncated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "symbol",
+        "start",
+        "end",
+        "reason",
+        "code",
+        "truncated"
+      ],
+      "title": "SearchHit",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "search_version": {
+      "default": "1",
+      "title": "Search Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "no_matches",
+        "no_new_context",
+        "budget_too_small"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "hits": {
+      "items": {
+        "$ref": "#/$defs/SearchHit"
+      },
+      "title": "Hits",
+      "type": "array"
+    },
+    "scanned_files": {
+      "title": "Scanned Files",
+      "type": "integer"
+    },
+    "matched_regions": {
+      "title": "Matched Regions",
+      "type": "integer"
+    },
+    "suppressed": {
+      "title": "Suppressed",
+      "type": "integer"
+    },
+    "omitted": {
+      "title": "Omitted",
+      "type": "integer"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "budget_tokens": {
+      "title": "Budget Tokens",
+      "type": "integer"
+    },
+    "budget_scope": {
+      "enum": [
+        "json_payload",
+        "mcp_result"
+      ],
+      "title": "Budget Scope",
+      "type": "string"
+    },
+    "response_bytes": {
+      "default": 0,
+      "title": "Response Bytes",
+      "type": "integer"
+    },
+    "tokens_estimate": {
+      "default": 0,
+      "title": "Tokens Estimate",
+      "type": "integer"
+    },
+    "token_method": {
+      "const": "utf8_bytes_div_3",
+      "default": "utf8_bytes_div_3",
+      "title": "Token Method",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "hits",
+    "scanned_files",
+    "matched_regions",
+    "suppressed",
+    "omitted",
+    "limitations",
+    "budget_tokens",
+    "budget_scope"
+  ],
+  "title": "SearchResponse",
+  "type": "object"
+}
