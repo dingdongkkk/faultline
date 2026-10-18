@@ -1,0 +1,67 @@
+{
+ "case": "e6_invoicing",
+ "category": "multi_module_misleading_symptom",
+ "condition": "C",
+ "trial": 1,
+ "dry_run": null,
+ "started_at": "2026-10-18T09:08:02+00:00",
+ "harness_wall_s": 22.44,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "3cd4188e57d6f8b533b29db698f39ad0f769c66c4a810112d74ab738c92db8a1",
+ "protocol": "v4-search-neutral-deferred",
+ "agent": {
+  "events": 19,
+  "init": {
+   "mcp_servers": [
+    {
+     "name": "faultline",
+     "status": "connected",
+     "source": "dynamic"
+    }
+   ],
+   "faultline_tools_offered": [
+    "mcp__faultline__check_patch",
+    "mcp__faultline__expand_evidence",
+    "mcp__faultline__investigate_failure",
+    "mcp__faultline__search_code"
+   ]
+  },
+  "tool_calls": {
+   "Bash": 3,
+   "Edit": 1
+  },
+  "tool_calls_total": 4,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 5,
+  "duration_ms": 20824,
+  "duration_api_ms": 18575,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 8,
+   "cache_creation_input_tokens": 18414,
+   "cache_read_input_tokens": 140555,
+   "output_tokens": 1029
+  },
+  "final_text": "I fixed the bug with a one-word change in `invoicing/currency.py`. All 8 tests now pass, including `test_invoice_jpy`.\n\n**The bug:** `minor_units()` lowercased the currency code (`currency.lower()`) before looking it up in `ZERO_DECIMAL`, but that set holds uppercase codes (`{\"JPY\", \"KRW\"}`). So no currency was ever treated as having zero decimals. Yen totals were converted and formatted with 2 decimal places, which produced `\u00a514,118.50` instead of `\u00a514,118`.\n\n**The change:** I replaced `currency.lower()` with `currency.upper()`. The lookup now matches the set and still works if a lowercase co"
+ },
+ "faultline": {
+  "investigations": [],
+  "patch_checks": 0
+ },
+ "leak_audit_hits": [],
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "invoicing/currency.py | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)"
+ }
+}

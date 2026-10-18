@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "faultline"
+version = "0.0.1"
+description = "MCP server that runs bounded, verifiable debugging investigations with a small local model."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.8,<3",
+]
+
+[project.urls]
+Homepage = "https://github.com/dingdongkkk/faultline"
+Repository = "https://github.com/dingdongkkk/faultline"
+
+[project.optional-dependencies]
+# The MCP adapter is optional so the engine can be tested without it.
+# The v2 SDK renamed FastMCP to MCPServer; re-verify on upgrade.
+mcp = ["mcp>=2.3,<3"]
+# Required in the *target* interpreter, not necessarily Faultline's.
+target = ["pytest>=8", "coverage>=7.10,<8"]
+dev = ["pytest>=8", "coverage>=7.10,<8", "mcp>=2.3,<3"]
+
+[project.scripts]
+faultline = "faultline.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/faultline"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Fixture projects under tests/fixtures are run in subprocesses, never collected directly.
+norecursedirs = ["tests/fixtures"]
+addopts = "-p no:cacheprovider"
+markers = [
+    "live_model: requires a running local llama.cpp server",
+    "mcp_client: requires a real MCP client",
+]

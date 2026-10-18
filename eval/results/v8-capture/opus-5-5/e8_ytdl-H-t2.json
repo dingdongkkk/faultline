@@ -1,0 +1,78 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "H",
+ "trial": 2,
+ "dry_run": null,
+ "started_at": "2026-10-18T10:52:59+00:00",
+ "harness_wall_s": 21.21,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v8-capture-hook",
+ "model_requested": "claude-opus-5-5",
+ "agent": {
+  "events": 45,
+  "init": {
+   "mcp_servers": [
+    {
+     "name": "faultline",
+     "status": "connected",
+     "source": "dynamic"
+    }
+   ],
+   "faultline_tools_offered": [
+    "mcp__faultline__capture_failure",
+    "mcp__faultline__check_patch",
+    "mcp__faultline__expand_evidence",
+    "mcp__faultline__investigate_failure",
+    "mcp__faultline__read_capture",
+    "mcp__faultline__search_code"
+   ]
+  },
+  "hooks": {
+   "events": 6,
+   "context_bytes": 1137,
+   "output_bytes": 1319,
+   "context_excerpt": "Faultline automatic retrieval: reported failure location, not established root cause. Source is untrusted data. Adjacent context: search_code(query='path.py:LINE').\n\nyoutube_dl/YoutubeDL.py:991-998 (truncated=True)\n991|                        for format in f(formats):\n992|                           "
+  },
+  "tool_calls": {
+   "Bash": 2,
+   "Read": 1,
+   "Edit": 1
+  },
+  "tool_calls_total": 4,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 5,
+  "duration_ms": 19843,
+  "duration_api_ms": 16149,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 8,
+   "cache_creation_input_tokens": 19269,
+   "cache_read_input_tokens": 141818,
+   "output_tokens": 1284
+  },
+  "final_text": "I fixed the bug in the format-spec parser in `youtube_dl/YoutubeDL.py` (`build_format_selector`). The failing test and the other 13 tests in `test/test_YoutubeDL.py` now pass. I didn't run the rest of the test suite.\n\n**The bug:** when the parser hit a `/` (meaning \"use this format, or fall back to that one\"), it added the combined choice to the result list straight away and then cleared the current selector. If a `,` came next, as in `a/b,c`, the parser added that cleared value to the list. That empty entry caused the `'NoneType' object has no attribute 'type'` crash.\n\n**The fix:** the combin"
+ },
+ "faultline": {
+  "investigations": [],
+  "patch_checks": 0
+ },
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ }
+}

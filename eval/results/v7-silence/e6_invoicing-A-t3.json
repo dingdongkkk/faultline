@@ -1,0 +1,62 @@
+{
+ "case": "e6_invoicing",
+ "category": "multi_module_misleading_symptom",
+ "condition": "A",
+ "trial": 3,
+ "dry_run": null,
+ "started_at": "2026-10-18T10:04:59+00:00",
+ "harness_wall_s": 17.9,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v4-search-neutral-deferred",
+ "model_requested": "claude-sonnet-5-5",
+ "agent": {
+  "events": 24,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "hooks": {
+   "events": 0,
+   "context_bytes": 0,
+   "output_bytes": 0,
+   "context_excerpt": null
+  },
+  "tool_calls": {
+   "Bash": 3,
+   "Read": 3,
+   "Edit": 1
+  },
+  "tool_calls_total": 7,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 8,
+  "duration_ms": 16699,
+  "duration_api_ms": 14576,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "permission_denials": 1,
+  "usage": {
+   "input_tokens": 10,
+   "cache_creation_input_tokens": 17750,
+   "cache_read_input_tokens": 178709,
+   "output_tokens": 969
+  },
+  "final_text": "I fixed the bug in `invoicing/currency.py`. `minor_units()` called `currency.lower()` and compared the result to `ZERO_DECIMAL`, which holds uppercase codes. \"JPY\" therefore never matched and was treated as a 2-decimal currency, so the total came out as `\u00a514,118.50`. I changed it to `currency.upper()`. `test_invoice_jpy` now passes, and so do the other 7 tests in the suite."
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "invoicing/currency.py | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)"
+ }
+}

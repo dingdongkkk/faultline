@@ -1,0 +1,18 @@
+{
+ "next": {
+  "action": "inspect_locations",
+  "location_ids": [
+   "L1",
+   "L2"
+  ],
+  "locals": [
+   "qty",
+   "tiers"
+  ],
+  "test_ids": [
+   "t0",
+   "t1"
+  ],
+  "rationale": "Tied lines on the bulk path."
+ }
+}

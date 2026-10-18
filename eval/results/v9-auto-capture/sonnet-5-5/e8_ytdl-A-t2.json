@@ -1,0 +1,61 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "A",
+ "trial": 2,
+ "dry_run": null,
+ "started_at": "2026-10-18T11:07:03+00:00",
+ "harness_wall_s": 28.03,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v4-search-neutral-deferred",
+ "model_requested": "claude-sonnet-5-5",
+ "agent": {
+  "events": 34,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "hooks": {
+   "events": 0,
+   "context_bytes": 0,
+   "output_bytes": 0,
+   "context_excerpt": null
+  },
+  "tool_calls": {
+   "Bash": 8,
+   "Edit": 1
+  },
+  "tool_calls_total": 9,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 10,
+  "duration_ms": 26867,
+  "duration_api_ms": 22565,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "permission_denials": 1,
+  "usage": {
+   "input_tokens": 18,
+   "cache_creation_input_tokens": 24853,
+   "cache_read_input_tokens": 360777,
+   "output_tokens": 1984
+  },
+  "final_text": "I fixed the format-selector parser in `youtube_dl/YoutubeDL.py`, and all 14 tests in `test/test_YoutubeDL.py` now pass.\n\nThe bug was in `build_format_selector`. When it parsed a `/` choice, such as `bestvideo/best`, it appended the choice to the list and set the current selector to `None`. A following `,` then appended that `None` to the list as well. Building a selector for `bestvideo/best,bestaudio` then crashed with `AttributeError: 'NoneType' object has no attribute 'type'`.\n\nNow the `/` branch sets the current selector to the `PICKFIRST` choice instead, so the `,` appends the real choice."
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ }
+}

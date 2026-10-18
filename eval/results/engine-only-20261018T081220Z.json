@@ -1,0 +1,156 @@
+{
+ "private_store_sha256": "3cd4188e57d6f8b533b29db698f39ad0f769c66c4a810112d74ab738c92db8a1",
+ "rows": [
+  {
+   "case": "e1_textstats",
+   "category": "useful_sbfl",
+   "planner": "deterministic",
+   "status": "completed",
+   "stopping_reason": "planner_stopped",
+   "faulty_line_rank": [
+    1,
+    3
+   ],
+   "faulty_line_observed": true,
+   "actions": [
+    "inspect_locations",
+    "compare_observations",
+    "stop"
+   ],
+   "retries": 0,
+   "fallbacks": 0,
+   "wall_ms": 1468,
+   "response_bytes": 3468,
+   "planner_model": null
+  },
+  {
+   "case": "e2_shipping",
+   "category": "ties",
+   "planner": "deterministic",
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "faulty_line_rank": [
+    1,
+    4
+   ],
+   "faulty_line_observed": true,
+   "actions": [
+    "inspect_locations",
+    "compare_observations",
+    "inspect_function"
+   ],
+   "retries": 0,
+   "fallbacks": 0,
+   "wall_ms": 2044,
+   "response_bytes": 3523,
+   "planner_model": null
+  },
+  {
+   "case": "e3_split",
+   "category": "same_path_wrong_value",
+   "planner": "deterministic",
+   "status": "completed",
+   "stopping_reason": "planner_stopped",
+   "faulty_line_rank": [
+    1,
+    5
+   ],
+   "faulty_line_observed": true,
+   "actions": [
+    "inspect_locations",
+    "compare_observations",
+    "stop"
+   ],
+   "retries": 0,
+   "fallbacks": 0,
+   "wall_ms": 1400,
+   "response_bytes": 3379,
+   "planner_model": null
+  },
+  {
+   "case": "e4_config",
+   "category": "inconclusive",
+   "planner": "deterministic",
+   "status": "inconclusive",
+   "stopping_reason": "no_new_actions",
+   "faulty_line_rank": null,
+   "faulty_line_observed": false,
+   "actions": [
+    "inspect_locations",
+    "inspect_function",
+    "stop"
+   ],
+   "retries": 0,
+   "fallbacks": 0,
+   "wall_ms": 1390,
+   "response_bytes": 3187,
+   "planner_model": null
+  },
+  {
+   "case": "e5_slug",
+   "category": "regression_risk",
+   "planner": "deterministic",
+   "status": "completed",
+   "stopping_reason": "planner_stopped",
+   "faulty_line_rank": [
+    1,
+    1
+   ],
+   "faulty_line_observed": true,
+   "actions": [
+    "inspect_locations",
+    "compare_observations",
+    "stop"
+   ],
+   "retries": 0,
+   "fallbacks": 0,
+   "wall_ms": 1399,
+   "response_bytes": 3108,
+   "planner_model": null
+  },
+  {
+   "case": "e6_invoicing",
+   "category": "multi_module_misleading_symptom",
+   "planner": "deterministic",
+   "status": "completed",
+   "stopping_reason": "planner_stopped",
+   "faulty_line_rank": [
+    4,
+    1
+   ],
+   "faulty_line_observed": false,
+   "actions": [
+    "inspect_locations",
+    "compare_observations",
+    "stop"
+   ],
+   "retries": 0,
+   "fallbacks": 0,
+   "wall_ms": 1426,
+   "response_bytes": 3448,
+   "planner_model": null
+  },
+  {
+   "case": "e7_sessions",
+   "category": "multi_module_misleading_symptom",
+   "planner": "deterministic",
+   "status": "completed",
+   "stopping_reason": "max_rounds",
+   "faulty_line_rank": [
+    1,
+    9
+   ],
+   "faulty_line_observed": false,
+   "actions": [
+    "inspect_locations",
+    "compare_observations",
+    "inspect_function"
+   ],
+   "retries": 0,
+   "fallbacks": 0,
+   "wall_ms": 2071,
+   "response_bytes": 3496,
+   "planner_model": null
+  }
+ ]
+}

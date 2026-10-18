@@ -1,0 +1,21 @@
+{
+  "evidence_id": "O3",
+  "run_id": "R1",
+  "probe_id": "L1",
+  "path": "shop/cart.py",
+  "line": 15,
+  "event": "before_line",
+  "timing": {"event_seq": 4, "hit_ordinal": 1, "t_ns": 182340},
+  "frame_qualname": "bulk_rate",
+  "call_depth": 2,
+  "values": {
+    "qty": {"kind": "int", "value": 10},
+    "tiers": {"kind": "dict", "length": 2, "entries": [
+      [{"kind": "int", "value": 10}, {"kind": "int", "value": 10}],
+      [{"kind": "int", "value": 50}, {"kind": "int", "value": 20}]
+    ]},
+    "customer": {"kind": "opaque", "type_name": "shop.models.Customer"},
+    "api_token": {"kind": "redacted", "reason": "name_pattern"}
+  },
+  "exception_type": null
+}

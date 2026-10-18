@@ -1,0 +1,1624 @@
+{
+  "$defs": {
+    "AlignedValue": {
+      "additionalProperties": false,
+      "properties": {
+        "probe_id": {
+          "title": "Probe Id",
+          "type": "string"
+        },
+        "event": {
+          "$ref": "#/$defs/ObservationEvent"
+        },
+        "hit_ordinal": {
+          "title": "Hit Ordinal",
+          "type": "integer"
+        },
+        "alignment": {
+          "enum": [
+            "unambiguous",
+            "ordinal",
+            "ambiguous",
+            "incomplete"
+          ],
+          "title": "Alignment",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "failing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SnapshotValue"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "passing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SnapshotValue"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "relation": {
+          "enum": [
+            "equal",
+            "differs",
+            "incomparable",
+            "missing"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "probe_id",
+        "event",
+        "hit_ordinal",
+        "alignment",
+        "name",
+        "relation"
+      ],
+      "title": "AlignedValue",
+      "type": "object"
+    },
+    "CompareObservations": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "const": "compare_observations",
+          "title": "Action",
+          "type": "string"
+        },
+        "failing_run_id": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+          "title": "Failing Run Id",
+          "type": "string"
+        },
+        "passing_run_id": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+          "title": "Passing Run Id",
+          "type": "string"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 300,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "failing_run_id",
+        "passing_run_id"
+      ],
+      "title": "CompareObservations",
+      "type": "object"
+    },
+    "Comparison": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "failing_run_id": {
+          "title": "Failing Run Id",
+          "type": "string"
+        },
+        "passing_run_id": {
+          "title": "Passing Run Id",
+          "type": "string"
+        },
+        "comparator_reason": {
+          "title": "Comparator Reason",
+          "type": "string"
+        },
+        "aligned": {
+          "items": {
+            "$ref": "#/$defs/AlignedValue"
+          },
+          "title": "Aligned",
+          "type": "array"
+        },
+        "equal_count": {
+          "default": 0,
+          "title": "Equal Count",
+          "type": "integer"
+        },
+        "incomparable_count": {
+          "default": 0,
+          "title": "Incomparable Count",
+          "type": "integer"
+        },
+        "hit_count_differences": {
+          "additionalProperties": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "$ref": "#/$defs/HitCount"
+              },
+              {
+                "$ref": "#/$defs/HitCount"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Hit Count Differences",
+          "type": "object"
+        },
+        "first_divergence_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "First Divergence Index"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "failing_run_id",
+        "passing_run_id",
+        "comparator_reason",
+        "aligned",
+        "hit_count_differences"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "ExclusionReason": {
+      "enum": [
+        "skipped",
+        "xfail",
+        "xpass",
+        "xpass_strict",
+        "xfail_raises_mismatch",
+        "xfail_marked_unknown",
+        "setup_failed",
+        "teardown_failed",
+        "incomplete_phases",
+        "duplicate_report",
+        "trace_conflict",
+        "unrelated_failure"
+      ],
+      "title": "ExclusionReason",
+      "type": "string"
+    },
+    "FailureSignature": {
+      "additionalProperties": false,
+      "description": "What must match for an observation run to count as reproducing.",
+      "properties": {
+        "exception_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exception Type"
+        },
+        "crash_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crash Path"
+        },
+        "crash_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crash Line"
+        },
+        "test_line": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Test Line"
+        },
+        "message_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message Digest"
+        },
+        "message_excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message Excerpt"
+        }
+      },
+      "title": "FailureSignature",
+      "type": "object"
+    },
+    "HitCount": {
+      "additionalProperties": false,
+      "description": "Hit count for one probe/event. ``exact`` is False when tracing stopped\nearly (callback budget, timeout, conflict, crash): ``count`` is then only\na lower bound and may not be used for unambiguous alignment.",
+      "properties": {
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "exact": {
+          "title": "Exact",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "count",
+        "exact"
+      ],
+      "title": "HitCount",
+      "type": "object"
+    },
+    "InspectFunction": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "const": "inspect_function",
+          "title": "Action",
+          "type": "string"
+        },
+        "function_id": {
+          "maxLength": 32,
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+          "title": "Function Id",
+          "type": "string"
+        },
+        "test_ids": {
+          "items": {
+            "maxLength": 32,
+            "minLength": 1,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Test Ids",
+          "type": "array"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 300,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "function_id",
+        "test_ids"
+      ],
+      "title": "InspectFunction",
+      "type": "object"
+    },
+    "InspectLocations": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "const": "inspect_locations",
+          "title": "Action",
+          "type": "string"
+        },
+        "location_ids": {
+          "items": {
+            "maxLength": 32,
+            "minLength": 1,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Location Ids",
+          "type": "array"
+        },
+        "locals": {
+          "items": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Locals",
+          "type": "array"
+        },
+        "test_ids": {
+          "items": {
+            "maxLength": 32,
+            "minLength": 1,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Test Ids",
+          "type": "array"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 300,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "location_ids",
+        "test_ids"
+      ],
+      "title": "InspectLocations",
+      "type": "object"
+    },
+    "InvestigationStatus": {
+      "enum": [
+        "completed",
+        "inconclusive",
+        "failure_not_reproduced",
+        "insufficient_coverage",
+        "unsupported",
+        "timed_out",
+        "execution_error"
+      ],
+      "title": "InvestigationStatus",
+      "type": "string"
+    },
+    "Limitation": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "detail"
+      ],
+      "title": "Limitation",
+      "type": "object"
+    },
+    "LineRange": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "LineRange",
+      "type": "object"
+    },
+    "Observation": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "probe_id": {
+          "title": "Probe Id",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "event": {
+          "$ref": "#/$defs/ObservationEvent"
+        },
+        "timing": {
+          "$ref": "#/$defs/ObservationTiming"
+        },
+        "frame_qualname": {
+          "title": "Frame Qualname",
+          "type": "string"
+        },
+        "call_depth": {
+          "title": "Call Depth",
+          "type": "integer"
+        },
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/SnapshotValue"
+          },
+          "title": "Values",
+          "type": "object"
+        },
+        "exception_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exception Type"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "run_id",
+        "probe_id",
+        "path",
+        "line",
+        "event",
+        "timing",
+        "frame_qualname",
+        "call_depth",
+        "values"
+      ],
+      "title": "Observation",
+      "type": "object"
+    },
+    "ObservationEvent": {
+      "enum": [
+        "before_line",
+        "call",
+        "return",
+        "exception",
+        "unwind",
+        "exit_ambiguous"
+      ],
+      "title": "ObservationEvent",
+      "type": "string"
+    },
+    "ObservationRun": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "test_nodeid": {
+          "title": "Test Nodeid",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "target",
+            "comparator",
+            "reproduction_check"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "reproduction": {
+          "$ref": "#/$defs/Reproduction"
+        },
+        "signature": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FailureSignature"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "call_outcome": {
+          "$ref": "#/$defs/PhaseOutcome"
+        },
+        "probe_hits": {
+          "additionalProperties": {
+            "$ref": "#/$defs/HitCount"
+          },
+          "title": "Probe Hits",
+          "type": "object"
+        },
+        "counts_exact": {
+          "title": "Counts Exact",
+          "type": "boolean"
+        },
+        "trace_stopped": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Stopped"
+        },
+        "events_captured": {
+          "title": "Events Captured",
+          "type": "integer"
+        },
+        "events_dropped": {
+          "title": "Events Dropped",
+          "type": "integer"
+        },
+        "truncation": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Truncation",
+          "type": "array"
+        },
+        "unsupported_detected": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unsupported Detected",
+          "type": "array"
+        },
+        "duration_ms": {
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "fingerprint_id": {
+          "title": "Fingerprint Id",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceIdentity"
+          },
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "run_id",
+        "test_nodeid",
+        "role",
+        "reproduction",
+        "call_outcome",
+        "probe_hits",
+        "counts_exact",
+        "events_captured",
+        "events_dropped",
+        "truncation",
+        "unsupported_detected",
+        "duration_ms",
+        "fingerprint_id",
+        "sources"
+      ],
+      "title": "ObservationRun",
+      "type": "object"
+    },
+    "ObservationTiming": {
+      "additionalProperties": false,
+      "properties": {
+        "event_seq": {
+          "title": "Event Seq",
+          "type": "integer"
+        },
+        "hit_ordinal": {
+          "title": "Hit Ordinal",
+          "type": "integer"
+        },
+        "t_ns": {
+          "title": "T Ns",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "event_seq",
+        "hit_ordinal",
+        "t_ns"
+      ],
+      "title": "ObservationTiming",
+      "type": "object"
+    },
+    "Omission": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "count",
+        "evidence_ids"
+      ],
+      "title": "Omission",
+      "type": "object"
+    },
+    "PhaseOutcome": {
+      "enum": [
+        "passed",
+        "failed",
+        "skipped",
+        "not_run"
+      ],
+      "title": "PhaseOutcome",
+      "type": "string"
+    },
+    "PlannerKind": {
+      "enum": [
+        "deterministic",
+        "local-model"
+      ],
+      "title": "PlannerKind",
+      "type": "string"
+    },
+    "PlannerRound": {
+      "additionalProperties": false,
+      "properties": {
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "planner": {
+          "$ref": "#/$defs/PlannerKind"
+        },
+        "attempts": {
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "rejected": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Rejected",
+          "type": "array"
+        },
+        "fallback_used": {
+          "title": "Fallback Used",
+          "type": "boolean"
+        },
+        "fallback_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fallback Reason"
+        },
+        "action": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "compare_observations": "#/$defs/CompareObservations",
+                  "inspect_function": "#/$defs/InspectFunction",
+                  "inspect_locations": "#/$defs/InspectLocations",
+                  "stop": "#/$defs/Stop"
+                },
+                "propertyName": "action"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/InspectLocations"
+                },
+                {
+                  "$ref": "#/$defs/InspectFunction"
+                },
+                {
+                  "$ref": "#/$defs/CompareObservations"
+                },
+                {
+                  "$ref": "#/$defs/Stop"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action"
+        },
+        "rationale_untrusted": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rationale Untrusted"
+        },
+        "inference_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Inference Ms"
+        },
+        "prompt_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt Tokens"
+        },
+        "completion_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completion Tokens"
+        }
+      },
+      "required": [
+        "round",
+        "planner",
+        "attempts",
+        "rejected",
+        "fallback_used"
+      ],
+      "title": "PlannerRound",
+      "type": "object"
+    },
+    "RankedLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "location_id": {
+          "title": "Location Id",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "function_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Function Id"
+        },
+        "ef": {
+          "title": "Ef",
+          "type": "integer"
+        },
+        "ep": {
+          "title": "Ep",
+          "type": "integer"
+        },
+        "total_failing": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Failing"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        },
+        "tie_group": {
+          "title": "Tie Group",
+          "type": "string"
+        }
+      },
+      "required": [
+        "location_id",
+        "path",
+        "line",
+        "ef",
+        "ep",
+        "score",
+        "tie_group"
+      ],
+      "title": "RankedLocation",
+      "type": "object"
+    },
+    "RankingSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "policy": {
+          "const": "target_focused_f1",
+          "default": "target_focused_f1",
+          "title": "Policy",
+          "type": "string"
+        },
+        "total_failing": {
+          "title": "Total Failing",
+          "type": "integer"
+        },
+        "total_passing": {
+          "title": "Total Passing",
+          "type": "integer"
+        },
+        "unrelated_failing": {
+          "title": "Unrelated Failing",
+          "type": "integer"
+        },
+        "unrelated_failing_sample": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unrelated Failing Sample",
+          "type": "array"
+        },
+        "excluded": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/ExclusionReason"
+          },
+          "title": "Excluded",
+          "type": "object"
+        },
+        "ranked_line_count": {
+          "title": "Ranked Line Count",
+          "type": "integer"
+        },
+        "unattributed_line_count": {
+          "title": "Unattributed Line Count",
+          "type": "integer"
+        },
+        "setup_teardown_only_line_count": {
+          "title": "Setup Teardown Only Line Count",
+          "type": "integer"
+        },
+        "tie_groups": {
+          "items": {
+            "$ref": "#/$defs/TieGroup"
+          },
+          "title": "Tie Groups",
+          "type": "array"
+        },
+        "locations": {
+          "items": {
+            "$ref": "#/$defs/RankedLocation"
+          },
+          "title": "Locations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "total_failing",
+        "total_passing",
+        "unrelated_failing",
+        "excluded",
+        "ranked_line_count",
+        "unattributed_line_count",
+        "setup_teardown_only_line_count",
+        "tie_groups",
+        "locations"
+      ],
+      "title": "RankingSummary",
+      "type": "object"
+    },
+    "ReproducedFailure": {
+      "additionalProperties": false,
+      "properties": {
+        "test_nodeid": {
+          "title": "Test Nodeid",
+          "type": "string"
+        },
+        "baseline_run_id": {
+          "title": "Baseline Run Id",
+          "type": "string"
+        },
+        "signature": {
+          "$ref": "#/$defs/FailureSignature"
+        },
+        "isolated": {
+          "$ref": "#/$defs/Reproduction"
+        }
+      },
+      "required": [
+        "test_nodeid",
+        "baseline_run_id",
+        "signature",
+        "isolated"
+      ],
+      "title": "ReproducedFailure",
+      "type": "object"
+    },
+    "Reproduction": {
+      "enum": [
+        "reproduced",
+        "partial_match",
+        "different_failure",
+        "not_reproduced",
+        "not_applicable",
+        "unknown"
+      ],
+      "title": "Reproduction",
+      "type": "string"
+    },
+    "ResponseMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "response_bytes": {
+          "title": "Response Bytes",
+          "type": "integer"
+        },
+        "response_tokens_estimate": {
+          "title": "Response Tokens Estimate",
+          "type": "integer"
+        },
+        "token_estimate_method": {
+          "const": "utf8_bytes_div_3",
+          "default": "utf8_bytes_div_3",
+          "title": "Token Estimate Method",
+          "type": "string"
+        },
+        "budget_tokens": {
+          "title": "Budget Tokens",
+          "type": "integer"
+        },
+        "wall_ms": {
+          "title": "Wall Ms",
+          "type": "integer"
+        },
+        "coverage_run_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Run Ms"
+        },
+        "observation_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observation Ms"
+        },
+        "planner_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Planner Ms"
+        },
+        "rounds": {
+          "title": "Rounds",
+          "type": "integer"
+        },
+        "planner_retries": {
+          "title": "Planner Retries",
+          "type": "integer"
+        },
+        "planner_fallbacks": {
+          "title": "Planner Fallbacks",
+          "type": "integer"
+        },
+        "compacted": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Compacted"
+        },
+        "planner_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Planner Model"
+        }
+      },
+      "required": [
+        "response_bytes",
+        "response_tokens_estimate",
+        "budget_tokens",
+        "wall_ms",
+        "rounds",
+        "planner_retries",
+        "planner_fallbacks"
+      ],
+      "title": "ResponseMetrics",
+      "type": "object"
+    },
+    "SnapshotValue": {
+      "additionalProperties": false,
+      "description": "Bounded, primitive-only copy of a runtime value.\n\nOnly exact built-in types are expanded. Subclasses of built-ins and every\nother object are ``opaque``: type name only, read through type\ndescriptors, never through repr/str/properties/iteration of user types.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "none",
+            "bool",
+            "int",
+            "float",
+            "str",
+            "bytes",
+            "list",
+            "tuple",
+            "dict",
+            "set",
+            "frozenset",
+            "opaque",
+            "redacted",
+            "cycle",
+            "depth_limit",
+            "unavailable"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "type_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type Name"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/SnapshotValue"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Items"
+        },
+        "entries": {
+          "anyOf": [
+            {
+              "items": {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "$ref": "#/$defs/SnapshotValue"
+                  },
+                  {
+                    "$ref": "#/$defs/SnapshotValue"
+                  }
+                ],
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entries"
+        },
+        "truncated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncated"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "SnapshotValue",
+      "type": "object"
+    },
+    "SourceExcerpt": {
+      "additionalProperties": false,
+      "properties": {
+        "excerpt_id": {
+          "title": "Excerpt Id",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceIdentity"
+        },
+        "function_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Function Id"
+        },
+        "qualname": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Qualname"
+        },
+        "region": {
+          "$ref": "#/$defs/LineRange"
+        },
+        "shown": {
+          "items": {
+            "$ref": "#/$defs/LineRange"
+          },
+          "title": "Shown",
+          "type": "array"
+        },
+        "omitted": {
+          "items": {
+            "$ref": "#/$defs/LineRange"
+          },
+          "title": "Omitted",
+          "type": "array"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "truncated": {
+          "title": "Truncated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "excerpt_id",
+        "source",
+        "region",
+        "shown",
+        "omitted",
+        "text",
+        "truncated"
+      ],
+      "title": "SourceExcerpt",
+      "type": "object"
+    },
+    "SourceIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size": {
+          "title": "Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size"
+      ],
+      "title": "SourceIdentity",
+      "type": "object"
+    },
+    "Stop": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "const": "stop",
+          "title": "Action",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "sufficient_evidence",
+            "no_useful_action",
+            "evidence_contradictory"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 300,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "reason"
+      ],
+      "title": "Stop",
+      "type": "object"
+    },
+    "StoppingReason": {
+      "enum": [
+        "planner_stopped",
+        "max_rounds",
+        "time_budget_exhausted",
+        "no_new_actions",
+        "baseline_not_failing",
+        "no_rankable_lines",
+        "unsupported_execution",
+        "collection_error",
+        "workspace_changed",
+        "worker_failure",
+        "cancelled",
+        "internal_error"
+      ],
+      "title": "StoppingReason",
+      "type": "string"
+    },
+    "TieGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "tie_group": {
+          "title": "Tie Group",
+          "type": "string"
+        },
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "size": {
+          "title": "Size",
+          "type": "integer"
+        },
+        "shown": {
+          "title": "Shown",
+          "type": "integer"
+        },
+        "member_location_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Member Location Ids",
+          "type": "array"
+        },
+        "distinct_count_pairs": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Distinct Count Pairs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "tie_group",
+        "rank",
+        "size",
+        "shown",
+        "member_location_ids",
+        "distinct_count_pairs"
+      ],
+      "title": "TieGroup",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "default": "0.2",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/InvestigationStatus"
+    },
+    "stopping_reason": {
+      "$ref": "#/$defs/StoppingReason"
+    },
+    "planner_requested": {
+      "$ref": "#/$defs/PlannerKind"
+    },
+    "fingerprint_id": {
+      "title": "Fingerprint Id",
+      "type": "string"
+    },
+    "reproduced": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ReproducedFailure"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "ranking": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RankingSummary"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "excerpts": {
+      "items": {
+        "$ref": "#/$defs/SourceExcerpt"
+      },
+      "title": "Excerpts",
+      "type": "array"
+    },
+    "observation_runs": {
+      "items": {
+        "$ref": "#/$defs/ObservationRun"
+      },
+      "title": "Observation Runs",
+      "type": "array"
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/Observation"
+      },
+      "title": "Observations",
+      "type": "array"
+    },
+    "comparisons": {
+      "items": {
+        "$ref": "#/$defs/Comparison"
+      },
+      "title": "Comparisons",
+      "type": "array"
+    },
+    "unresolved": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unresolved",
+      "type": "array"
+    },
+    "planner_rounds": {
+      "items": {
+        "$ref": "#/$defs/PlannerRound"
+      },
+      "title": "Planner Rounds",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "$ref": "#/$defs/Limitation"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "omissions": {
+      "items": {
+        "$ref": "#/$defs/Omission"
+      },
+      "title": "Omissions",
+      "type": "array"
+    },
+    "metrics": {
+      "$ref": "#/$defs/ResponseMetrics"
+    }
+  },
+  "required": [
+    "investigation_id",
+    "status",
+    "stopping_reason",
+    "planner_requested",
+    "fingerprint_id",
+    "excerpts",
+    "observation_runs",
+    "observations",
+    "comparisons",
+    "unresolved",
+    "planner_rounds",
+    "limitations",
+    "omissions",
+    "metrics"
+  ],
+  "title": "InvestigateResponse",
+  "type": "object"
+}

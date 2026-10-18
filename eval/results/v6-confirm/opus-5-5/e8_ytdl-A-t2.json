@@ -1,0 +1,62 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "A",
+ "trial": 2,
+ "dry_run": null,
+ "started_at": "2026-10-18T09:54:53+00:00",
+ "harness_wall_s": 26.64,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v4-search-neutral-deferred",
+ "model_requested": "claude-opus-5-5",
+ "agent": {
+  "events": 23,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "hooks": {
+   "events": 0,
+   "context_bytes": 0,
+   "output_bytes": 0,
+   "context_excerpt": null
+  },
+  "tool_calls": {
+   "Bash": 3,
+   "Read": 1,
+   "Edit": 1
+  },
+  "tool_calls_total": 5,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 6,
+  "duration_ms": 25472,
+  "duration_api_ms": 20488,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 10,
+   "cache_creation_input_tokens": 19878,
+   "cache_read_input_tokens": 182500,
+   "output_tokens": 1544
+  },
+  "final_text": "I fixed a bug in the format-spec parser in `youtube_dl/YoutubeDL.py`, in `build_format_selector`. The target test now passes, and so do the other 13 tests in `test/test_YoutubeDL.py`.\n\n**The bug:** when the parser saw `/`, it built the \"pick first available\" selector and added it straight to the list, then left the current selector empty. In a spec like `bestvideo/best,bestaudio`, the `,` that followed then added that empty selector to the list as `None`. That caused the `AttributeError: 'NoneType' object has no attribute 'type'`.\n\n**The fix:** the \"pick first available\" selector now becomes t"
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ }
+}

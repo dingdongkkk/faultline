@@ -1,0 +1,62 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "A",
+ "trial": 2,
+ "dry_run": null,
+ "started_at": "2026-10-18T11:07:34+00:00",
+ "harness_wall_s": 24.57,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v4-search-neutral-deferred",
+ "model_requested": "claude-opus-5-5",
+ "agent": {
+  "events": 20,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "hooks": {
+   "events": 0,
+   "context_bytes": 0,
+   "output_bytes": 0,
+   "context_excerpt": null
+  },
+  "tool_calls": {
+   "Bash": 3,
+   "Read": 1,
+   "Edit": 1
+  },
+  "tool_calls_total": 5,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 6,
+  "duration_ms": 23444,
+  "duration_api_ms": 18782,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 10,
+   "cache_creation_input_tokens": 20723,
+   "cache_read_input_tokens": 184174,
+   "output_tokens": 1418
+  },
+  "final_text": "I fixed the bug in the format-selector parser in `youtube_dl/YoutubeDL.py` (`build_format_selector`). The failing test now passes, along with the other 13 tests in `test/test_YoutubeDL.py`.\n\n**The bug:** when the parser saw `/`, it added the \"pick first\" choice to the list straight away and then cleared the current selector. For a spec like `bestvideo/best,bestaudio`, the comma that followed then added that empty selector to the list as `None`. That made the code crash with an `AttributeError` later on.\n\n**The fix:** the `/` branch now stores the choice as the current selector instead of addin"
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ }
+}

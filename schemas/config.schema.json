@@ -1,0 +1,246 @@
+{
+  "$defs": {
+    "ExecutionLimits": {
+      "additionalProperties": false,
+      "description": "Defaults; tool arguments may lower but never raise the caps.",
+      "properties": {
+        "timeout_seconds_default": {
+          "default": 120,
+          "title": "Timeout Seconds Default",
+          "type": "integer"
+        },
+        "timeout_seconds_cap": {
+          "default": 600,
+          "title": "Timeout Seconds Cap",
+          "type": "integer"
+        },
+        "max_rounds_cap": {
+          "default": 5,
+          "title": "Max Rounds Cap",
+          "type": "integer"
+        },
+        "budget_tokens_min": {
+          "default": 800,
+          "title": "Budget Tokens Min",
+          "type": "integer"
+        },
+        "budget_tokens_cap": {
+          "default": 8000,
+          "title": "Budget Tokens Cap",
+          "type": "integer"
+        },
+        "expand_budget_tokens_min": {
+          "default": 200,
+          "title": "Expand Budget Tokens Min",
+          "type": "integer"
+        },
+        "max_probes_per_action": {
+          "default": 5,
+          "title": "Max Probes Per Action",
+          "type": "integer"
+        },
+        "max_locals_per_probe": {
+          "default": 8,
+          "title": "Max Locals Per Probe",
+          "type": "integer"
+        },
+        "max_tests_per_action": {
+          "default": 2,
+          "title": "Max Tests Per Action",
+          "type": "integer"
+        },
+        "max_hits_per_probe": {
+          "default": 20,
+          "title": "Max Hits Per Probe",
+          "type": "integer"
+        },
+        "max_events_per_run": {
+          "default": 400,
+          "title": "Max Events Per Run",
+          "type": "integer"
+        },
+        "callback_cpu_budget_ms": {
+          "default": 2000,
+          "title": "Callback Cpu Budget Ms",
+          "type": "integer"
+        },
+        "value_max_depth": {
+          "default": 3,
+          "title": "Value Max Depth",
+          "type": "integer"
+        },
+        "value_max_items": {
+          "default": 16,
+          "title": "Value Max Items",
+          "type": "integer"
+        },
+        "value_max_str_chars": {
+          "default": 160,
+          "title": "Value Max Str Chars",
+          "type": "integer"
+        },
+        "value_max_bytes_preview": {
+          "default": 32,
+          "title": "Value Max Bytes Preview",
+          "type": "integer"
+        },
+        "value_max_int_digits": {
+          "default": 40,
+          "title": "Value Max Int Digits",
+          "type": "integer"
+        },
+        "snapshot_max_bytes": {
+          "default": 4096,
+          "title": "Snapshot Max Bytes",
+          "type": "integer"
+        },
+        "run_output_max_bytes": {
+          "default": 524288,
+          "title": "Run Output Max Bytes",
+          "type": "integer"
+        },
+        "baseline_output_max_bytes": {
+          "default": 67108864,
+          "title": "Baseline Output Max Bytes",
+          "type": "integer"
+        },
+        "diagnostic_output_max_bytes": {
+          "default": 16384,
+          "title": "Diagnostic Output Max Bytes",
+          "type": "integer"
+        },
+        "investigation_store_max_bytes": {
+          "default": 8388608,
+          "title": "Investigation Store Max Bytes",
+          "type": "integer"
+        },
+        "evidence_retention_hours": {
+          "default": 24,
+          "title": "Evidence Retention Hours",
+          "type": "integer"
+        },
+        "excerpt_max_lines": {
+          "default": 60,
+          "title": "Excerpt Max Lines",
+          "type": "integer"
+        },
+        "excerpt_context_lines": {
+          "default": 3,
+          "title": "Excerpt Context Lines",
+          "type": "integer"
+        },
+        "fingerprint_max_files": {
+          "default": 20000,
+          "title": "Fingerprint Max Files",
+          "type": "integer"
+        },
+        "fingerprint_max_total_bytes": {
+          "default": 536870912,
+          "title": "Fingerprint Max Total Bytes",
+          "type": "integer"
+        },
+        "planner_max_retries": {
+          "default": 2,
+          "title": "Planner Max Retries",
+          "type": "integer"
+        },
+        "planner_max_output_tokens": {
+          "default": 256,
+          "title": "Planner Max Output Tokens",
+          "type": "integer"
+        },
+        "planner_context_tokens": {
+          "default": 4096,
+          "title": "Planner Context Tokens",
+          "type": "integer"
+        },
+        "terminate_grace_seconds": {
+          "default": 2.0,
+          "title": "Terminate Grace Seconds",
+          "type": "number"
+        }
+      },
+      "title": "ExecutionLimits",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "repo_root": {
+      "title": "Repo Root",
+      "type": "string"
+    },
+    "python": {
+      "title": "Python",
+      "type": "string"
+    },
+    "pytest_args": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Pytest Args",
+      "type": "array"
+    },
+    "test_globs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Test Globs",
+      "type": "array"
+    },
+    "exclude_globs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Exclude Globs",
+      "type": "array"
+    },
+    "declared_env": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Declared Env",
+      "type": "array"
+    },
+    "extra_inputs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Extra Inputs",
+      "type": "array"
+    },
+    "state_dir": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "State Dir"
+    },
+    "limits": {
+      "$ref": "#/$defs/ExecutionLimits"
+    },
+    "model_endpoint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Endpoint"
+    }
+  },
+  "required": [
+    "repo_root",
+    "python"
+  ],
+  "title": "FaultlineConfig",
+  "type": "object"
+}

@@ -1,0 +1,153 @@
+{
+  "kind": "known_case_development_capture",
+  "case": "e8_ytdl",
+  "paid_agent_session": false,
+  "token_saving_measured": false,
+  "variable_supplied_to_capture": false,
+  "capture_wall_seconds": 1.2451,
+  "reuse_wall_seconds": 0.0622,
+  "same_capture_reused": true,
+  "summary": {
+    "capture_id": "Cf54c7908b8d5412eae23aba68674af2d",
+    "status": "failed",
+    "reused": false,
+    "failing_test": "test/test_YoutubeDL.py::TestFormatSelection::test_youtube_format_selection",
+    "fingerprint_id": "fp_ee88b93c85782f48",
+    "signature": {
+      "exception_type": "builtins.AttributeError",
+      "crash_path": "youtube_dl/YoutubeDL.py",
+      "crash_line": 994,
+      "test_line": 260,
+      "message_digest": "b9ef8fc1dd5bf64c",
+      "message_excerpt": "AttributeError: 'NoneType' object has no attribute 'type'"
+    },
+    "frames": [
+      {
+        "path": "youtube_dl/YoutubeDL.py",
+        "line": 994,
+        "function": "YoutubeDL.build_format_selector.<locals>._build_selector_function",
+        "values": {
+          "selector": {
+            "kind": "none"
+          },
+          "GROUP": {
+            "kind": "str",
+            "value": "GROUP",
+            "length": 5
+          },
+          "MERGE": {
+            "kind": "str",
+            "value": "MERGE",
+            "length": 5
+          },
+          "PICKFIRST": {
+            "kind": "str",
+            "value": "PICKFIRST",
+            "length": 9
+          }
+        }
+      }
+    ],
+    "changes": [
+      {
+        "seq": 5341,
+        "frame": 710,
+        "path": "youtube_dl/YoutubeDL.py",
+        "function": "YoutubeDL.build_format_selector.<locals>._build_selector_function",
+        "after_line": 987,
+        "observed_line": 987,
+        "variable": "s",
+        "before": {
+          "kind": "none"
+        },
+        "after": {
+          "kind": "unavailable",
+          "reason": "unbound"
+        }
+      },
+      {
+        "seq": 5264,
+        "frame": 696,
+        "path": "youtube_dl/YoutubeDL.py",
+        "function": "YoutubeDL.build_format_selector.<locals>._parse_format_selection",
+        "after_line": 961,
+        "observed_line": 962,
+        "variable": "current_selector",
+        "before": {
+          "kind": "opaque",
+          "type_name": "youtube_dl.YoutubeDL.FormatSelector"
+        },
+        "after": {
+          "kind": "none"
+        }
+      },
+      {
+        "seq": 5270,
+        "frame": 696,
+        "path": "youtube_dl/YoutubeDL.py",
+        "function": "YoutubeDL.build_format_selector.<locals>._parse_format_selection",
+        "after_line": 956,
+        "observed_line": 957,
+        "variable": "selectors",
+        "before": {
+          "kind": "list",
+          "length": 1,
+          "items": [
+            {
+              "kind": "opaque",
+              "type_name": "youtube_dl.YoutubeDL.FormatSelector"
+            }
+          ]
+        },
+        "after": {
+          "kind": "list",
+          "length": 2,
+          "items": [
+            {
+              "kind": "opaque",
+              "type_name": "youtube_dl.YoutubeDL.FormatSelector"
+            },
+            {
+              "kind": "none"
+            }
+          ]
+        }
+      },
+      {
+        "seq": 5340,
+        "frame": 710,
+        "path": "youtube_dl/YoutubeDL.py",
+        "function": "YoutubeDL.build_format_selector.<locals>._build_selector_function",
+        "after_line": 987,
+        "observed_line": 987,
+        "variable": "s",
+        "before": {
+          "kind": "opaque",
+          "type_name": "youtube_dl.YoutubeDL.FormatSelector"
+        },
+        "after": {
+          "kind": "none"
+        }
+      }
+    ],
+    "omitted_changes": 396,
+    "selection": "none_origin_candidates",
+    "limitations": [
+      "generator_coroutine_not_traced",
+      "history_ring_truncated",
+      "local_changes_are_not_causal_proof",
+      "locals_cap",
+      "main_thread_call_phase_only",
+      "opaque_and_truncated_values_may_hide_changes",
+      "external_state_and_undeclared_inputs_not_fingerprinted",
+      "reuse_is_a_previous_observation_not_a_new_test_run",
+      "reuse_ttl_600_seconds"
+    ],
+    "artifact_dir": "~/Library/Caches/faultline/d221684a0505e9dd/captures/Cf54c7908b8d5412eae23aba68674af2d",
+    "response_bytes": 2721,
+    "tokens_estimate": 907,
+    "budget_scope": "json_payload",
+    "token_method": "utf8_bytes_div_3"
+  },
+  "filtered_read_includes_line_961": true
+}

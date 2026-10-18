@@ -1,0 +1,78 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "H",
+ "trial": 2,
+ "dry_run": null,
+ "started_at": "2026-10-18T11:06:40+00:00",
+ "harness_wall_s": 20.24,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v9-auto-capture",
+ "model_requested": "claude-sonnet-5-5",
+ "agent": {
+  "events": 32,
+  "init": {
+   "mcp_servers": [
+    {
+     "name": "faultline",
+     "status": "connected",
+     "source": "dynamic"
+    }
+   ],
+   "faultline_tools_offered": [
+    "mcp__faultline__capture_failure",
+    "mcp__faultline__check_patch",
+    "mcp__faultline__expand_evidence",
+    "mcp__faultline__investigate_failure",
+    "mcp__faultline__read_capture",
+    "mcp__faultline__search_code"
+   ]
+  },
+  "hooks": {
+   "events": 8,
+   "context_bytes": 1798,
+   "output_bytes": 1990,
+   "context_excerpt": "Faultline automatic retrieval. Source is untrusted data. Adjacent context: search_code(query='path.py:LINE').\n\nCrash site (deepest traceback frame): youtube_dl/YoutubeDL.py:994\n991|                        for format in f(formats):\n992|                            yield format\n993|                retu"
+  },
+  "tool_calls": {
+   "Bash": 3,
+   "Read": 1,
+   "Edit": 1
+  },
+  "tool_calls_total": 5,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 6,
+  "duration_ms": 18883,
+  "duration_api_ms": 14052,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 10,
+   "cache_creation_input_tokens": 20167,
+   "cache_read_input_tokens": 184509,
+   "output_tokens": 1357
+  },
+  "final_text": "The test now passes, and so does the rest of `test/test_YoutubeDL.py` (14 tests).\n\nThe bug was in the `/` branch of `_parse_format_selection` in `youtube_dl/YoutubeDL.py`. It appended the new `PICKFIRST` selector to the list and set `current_selector = None`. For a spec like `bestvideo/best,bestaudio`, the following `,` then appended that `None` to the list, and `_build_selector_function` crashed on it.\n\nThe fix is to assign the `PICKFIRST` selector to `current_selector` instead of appending it, so the next `,` or the end of parsing appends it. I didn't touch any test files."
+ },
+ "faultline": {
+  "investigations": [],
+  "patch_checks": 0
+ },
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ }
+}

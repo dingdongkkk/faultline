@@ -1,0 +1,89 @@
+{
+ "case": "e2_shipping",
+ "category": "ties",
+ "condition": "C",
+ "trial": 1,
+ "dry_run": null,
+ "started_at": "2026-10-18T07:51:15+00:00",
+ "harness_wall_s": 30.33,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "94939a8503b663263d012b270d224da898998e19006470708cd312137ab93829",
+ "protocol": "v2-faultline-first",
+ "agent": {
+  "events": 21,
+  "init": {
+   "mcp_servers": [
+    {
+     "name": "faultline",
+     "status": "connected",
+     "source": "dynamic"
+    }
+   ],
+   "faultline_tools_offered": [
+    "mcp__faultline__check_patch",
+    "mcp__faultline__expand_evidence",
+    "mcp__faultline__investigate_failure"
+   ]
+  },
+  "tool_calls": {
+   "ToolSearch": 1,
+   "mcp__faultline__investigate_failure": 1,
+   "Read": 2,
+   "Edit": 1,
+   "mcp__faultline__check_patch": 1
+  },
+  "tool_calls_total": 6,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 7,
+  "duration_ms": 28681,
+  "duration_api_ms": 23737,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 10,
+   "cache_creation_input_tokens": 44255,
+   "cache_read_input_tokens": 163230,
+   "output_tokens": 1053
+  },
+  "final_text": "I fixed the express fee bug, and all 5 tests now pass, including `test_express_international`.\n\n**The bug:** at `shipping/fees.py:25`, express shipping doubled the fee (`fee * 2`). The module's docstring says express should add a flat `EXPRESS_SURCHARGE` of 1500 cents. Doubling only gave the right answer for domestic orders, because 1500 \u00d7 2 happens to equal 1500 + 1500. For an international order it turned 4000 into 8000 instead of the expected 5500. The tool's evidence matched this: the fee was 4000 before that line ran and 8000 after.\n\n**The change:** I replaced `fee = fee * 2` with `fee = "
+ },
+ "faultline": {
+  "investigations": [
+   {
+    "status": "completed",
+    "target": "tests/test_fees.py::test_express_international",
+    "metrics": {
+     "response_bytes": 5771,
+     "response_tokens_estimate": 1924,
+     "token_estimate_method": "utf8_bytes_div_3",
+     "budget_tokens": 2000,
+     "wall_ms": 2409,
+     "coverage_run_ms": 377,
+     "observation_ms": 1554,
+     "planner_ms": 1,
+     "rounds": 3,
+     "planner_retries": 0,
+     "planner_fallbacks": 0,
+     "compacted": null,
+     "planner_model": null
+    }
+   }
+  ],
+  "patch_checks": 1
+ },
+ "leak_audit_hits": [],
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "shipping/fees.py | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)"
+ }
+}

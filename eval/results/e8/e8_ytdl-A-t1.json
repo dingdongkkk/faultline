@@ -1,0 +1,54 @@
+{
+ "case": "e8_ytdl",
+ "category": "real_bug_large_codebase",
+ "condition": "A",
+ "trial": 1,
+ "dry_run": null,
+ "started_at": "2026-10-18T09:18:56+00:00",
+ "harness_wall_s": 24.91,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v4-search-neutral-deferred",
+ "agent": {
+  "events": 24,
+  "init": {
+   "mcp_servers": [],
+   "faultline_tools_offered": []
+  },
+  "tool_calls": {
+   "Bash": 4,
+   "Read": 1,
+   "Edit": 1
+  },
+  "tool_calls_total": 6,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 7,
+  "duration_ms": 23350,
+  "duration_api_ms": 18817,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 12,
+   "cache_creation_input_tokens": 21948,
+   "cache_read_input_tokens": 228140,
+   "output_tokens": 1510
+  },
+  "final_text": "I fixed the bug in the format-spec parser in `youtube_dl/YoutubeDL.py` (`build_format_selector`, around line 958). The failing test now passes, along with the other 13 tests in `test/test_YoutubeDL.py`.\n\n**The bug:** when the parser hit `/`, it saved the either/or choice straight to the result list and then cleared the current selector. So in a format string like `bestvideo/best,bestaudio`, the `,` that followed added an empty entry (`None`) to the list, and building the selector then crashed on it.\n\n**The fix:** the either/or choice is now kept as the current selector instead of being saved r"
+ },
+ "faultline": null,
+ "leak_audit_hits": [],
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "youtube_dl/YoutubeDL.py | 3 +--\n 1 file changed, 1 insertion(+), 2 deletions(-)"
+ }
+}

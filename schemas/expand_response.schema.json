@@ -1,0 +1,215 @@
+{
+  "$defs": {
+    "Freshness": {
+      "enum": [
+        "fresh",
+        "stale",
+        "unknown",
+        "expired"
+      ],
+      "title": "Freshness",
+      "type": "string"
+    },
+    "ResponseMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "response_bytes": {
+          "title": "Response Bytes",
+          "type": "integer"
+        },
+        "response_tokens_estimate": {
+          "title": "Response Tokens Estimate",
+          "type": "integer"
+        },
+        "token_estimate_method": {
+          "const": "utf8_bytes_div_3",
+          "default": "utf8_bytes_div_3",
+          "title": "Token Estimate Method",
+          "type": "string"
+        },
+        "budget_tokens": {
+          "title": "Budget Tokens",
+          "type": "integer"
+        },
+        "wall_ms": {
+          "title": "Wall Ms",
+          "type": "integer"
+        },
+        "coverage_run_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Run Ms"
+        },
+        "observation_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observation Ms"
+        },
+        "planner_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Planner Ms"
+        },
+        "rounds": {
+          "title": "Rounds",
+          "type": "integer"
+        },
+        "planner_retries": {
+          "title": "Planner Retries",
+          "type": "integer"
+        },
+        "planner_fallbacks": {
+          "title": "Planner Fallbacks",
+          "type": "integer"
+        },
+        "compacted": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Compacted"
+        },
+        "planner_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Planner Model"
+        }
+      },
+      "required": [
+        "response_bytes",
+        "response_tokens_estimate",
+        "budget_tokens",
+        "wall_ms",
+        "rounds",
+        "planner_retries",
+        "planner_fallbacks"
+      ],
+      "title": "ResponseMetrics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "default": "0.2",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "evidence_id": {
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "kind": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Kind"
+    },
+    "freshness": {
+      "$ref": "#/$defs/Freshness"
+    },
+    "stale_paths": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Stale Paths",
+      "type": "array"
+    },
+    "stale_components": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Stale Components",
+      "type": "array"
+    },
+    "irrecoverably_truncated": {
+      "title": "Irrecoverably Truncated",
+      "type": "boolean"
+    },
+    "content": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Content"
+    },
+    "next_cursor": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Cursor"
+    },
+    "metrics": {
+      "$ref": "#/$defs/ResponseMetrics"
+    }
+  },
+  "required": [
+    "investigation_id",
+    "evidence_id",
+    "freshness",
+    "stale_paths",
+    "stale_components",
+    "irrecoverably_truncated",
+    "metrics"
+  ],
+  "title": "ExpandResponse",
+  "type": "object"
+}

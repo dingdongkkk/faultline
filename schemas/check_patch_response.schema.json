@@ -1,0 +1,348 @@
+{
+  "$defs": {
+    "EffectiveScope": {
+      "enum": [
+        "affected",
+        "full",
+        "affected_escalated_to_full"
+      ],
+      "title": "EffectiveScope",
+      "type": "string"
+    },
+    "Limitation": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "detail"
+      ],
+      "title": "Limitation",
+      "type": "object"
+    },
+    "Omission": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "count",
+        "evidence_ids"
+      ],
+      "title": "Omission",
+      "type": "object"
+    },
+    "PatchMode": {
+      "enum": [
+        "affected",
+        "full"
+      ],
+      "title": "PatchMode",
+      "type": "string"
+    },
+    "ResponseMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "response_bytes": {
+          "title": "Response Bytes",
+          "type": "integer"
+        },
+        "response_tokens_estimate": {
+          "title": "Response Tokens Estimate",
+          "type": "integer"
+        },
+        "token_estimate_method": {
+          "const": "utf8_bytes_div_3",
+          "default": "utf8_bytes_div_3",
+          "title": "Token Estimate Method",
+          "type": "string"
+        },
+        "budget_tokens": {
+          "title": "Budget Tokens",
+          "type": "integer"
+        },
+        "wall_ms": {
+          "title": "Wall Ms",
+          "type": "integer"
+        },
+        "coverage_run_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Run Ms"
+        },
+        "observation_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observation Ms"
+        },
+        "planner_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Planner Ms"
+        },
+        "rounds": {
+          "title": "Rounds",
+          "type": "integer"
+        },
+        "planner_retries": {
+          "title": "Planner Retries",
+          "type": "integer"
+        },
+        "planner_fallbacks": {
+          "title": "Planner Fallbacks",
+          "type": "integer"
+        },
+        "compacted": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Compacted"
+        },
+        "planner_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Planner Model"
+        }
+      },
+      "required": [
+        "response_bytes",
+        "response_tokens_estimate",
+        "budget_tokens",
+        "wall_ms",
+        "rounds",
+        "planner_retries",
+        "planner_fallbacks"
+      ],
+      "title": "ResponseMetrics",
+      "type": "object"
+    },
+    "SelectedTest": {
+      "additionalProperties": false,
+      "properties": {
+        "nodeid": {
+          "title": "Nodeid",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "nodeid",
+        "reasons"
+      ],
+      "title": "SelectedTest",
+      "type": "object"
+    },
+    "TestRunOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "nodeid": {
+          "title": "Nodeid",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "passed",
+            "failed",
+            "error",
+            "skipped",
+            "xfailed",
+            "xpassed"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "nodeid",
+        "outcome"
+      ],
+      "title": "TestRunOutcome",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "default": "0.2",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "investigation_id": {
+      "title": "Investigation Id",
+      "type": "string"
+    },
+    "mode_requested": {
+      "$ref": "#/$defs/PatchMode"
+    },
+    "effective_scope": {
+      "$ref": "#/$defs/EffectiveScope"
+    },
+    "escalation_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Escalation Reasons",
+      "type": "array"
+    },
+    "changed_paths": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Changed Paths",
+      "type": "array"
+    },
+    "selected": {
+      "items": {
+        "$ref": "#/$defs/SelectedTest"
+      },
+      "title": "Selected",
+      "type": "array"
+    },
+    "selected_count": {
+      "title": "Selected Count",
+      "type": "integer"
+    },
+    "outcome_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Outcome Counts",
+      "type": "object"
+    },
+    "non_passing": {
+      "items": {
+        "$ref": "#/$defs/TestRunOutcome"
+      },
+      "title": "Non Passing",
+      "type": "array"
+    },
+    "previously_failing_now": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Previously Failing Now",
+      "type": "object"
+    },
+    "duration_ms": {
+      "title": "Duration Ms",
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed",
+        "timed_out",
+        "execution_error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "full_regression_verified": {
+      "title": "Full Regression Verified",
+      "type": "boolean"
+    },
+    "limitations": {
+      "items": {
+        "$ref": "#/$defs/Limitation"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "omissions": {
+      "items": {
+        "$ref": "#/$defs/Omission"
+      },
+      "title": "Omissions",
+      "type": "array"
+    },
+    "metrics": {
+      "$ref": "#/$defs/ResponseMetrics"
+    }
+  },
+  "required": [
+    "investigation_id",
+    "mode_requested",
+    "effective_scope",
+    "escalation_reasons",
+    "changed_paths",
+    "selected",
+    "selected_count",
+    "outcome_counts",
+    "non_passing",
+    "previously_failing_now",
+    "duration_ms",
+    "status",
+    "full_regression_verified",
+    "limitations",
+    "omissions",
+    "metrics"
+  ],
+  "title": "CheckPatchResponse",
+  "type": "object"
+}

@@ -1,0 +1,78 @@
+{
+ "case": "e7_sessions",
+ "category": "multi_module_misleading_symptom",
+ "condition": "H",
+ "trial": 3,
+ "dry_run": null,
+ "started_at": "2026-10-18T10:05:31+00:00",
+ "harness_wall_s": 17.0,
+ "claude_version": "2.1.302 (Claude Code)",
+ "llama_state": "n/a",
+ "private_store_sha256_at_run": "4980881337d556001d7f0ba9e39393df538916310f9ccf9d66cb4abdb2ed7455",
+ "protocol": "v7-hook-silence",
+ "model_requested": "claude-sonnet-5-5",
+ "agent": {
+  "events": 33,
+  "init": {
+   "mcp_servers": [
+    {
+     "name": "faultline",
+     "status": "connected",
+     "source": "dynamic"
+    }
+   ],
+   "faultline_tools_offered": [
+    "mcp__faultline__check_patch",
+    "mcp__faultline__expand_evidence",
+    "mcp__faultline__investigate_failure",
+    "mcp__faultline__search_code"
+   ]
+  },
+  "hooks": {
+   "events": 4,
+   "context_bytes": 0,
+   "output_bytes": 0,
+   "context_excerpt": null
+  },
+  "tool_calls": {
+   "Grep": 1,
+   "Glob": 1,
+   "Read": 6,
+   "Edit": 1,
+   "Bash": 1
+  },
+  "tool_calls_total": 10,
+  "result_record": true,
+  "is_error": false,
+  "subtype": "success",
+  "num_turns": 11,
+  "duration_ms": 15664,
+  "duration_api_ms": 12718,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "permission_denials": 0,
+  "usage": {
+   "input_tokens": 10,
+   "cache_creation_input_tokens": 18684,
+   "cache_read_input_tokens": 180464,
+   "output_tokens": 1571
+  },
+  "final_text": "I fixed the bug in `parse_12h` in `activity/timeparse.py`. It left \"12:xx AM\" as hour 12 instead of converting it to hour 0, so after-midnight events were parsed as noon. That made the night session come out as two sessions instead of one. I added a branch that sets the hour to 0 for 12 AM. All 7 tests pass, including `test_session_across_midnight`, and I didn't touch any test files."
+ },
+ "faultline": {
+  "investigations": [],
+  "patch_checks": 0
+ },
+ "leak_audit_hits": [],
+ "leak_audit_rev": 2,
+ "valid": true,
+ "judge": {
+  "tests_unchanged": true,
+  "visible_passed": true,
+  "visible_and_hidden_passed": true,
+  "hidden_failures": 0,
+  "correct": true,
+  "diff_stat": "activity/timeparse.py | 2 ++\n 1 file changed, 2 insertions(+)"
+ }
+}
