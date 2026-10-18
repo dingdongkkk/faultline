@@ -182,3 +182,14 @@ def test_selection_args_stripped_for_single_test_runs():
 
     assert without_selection_args(["-k", "not slow", "-mfast", "--deselect", "a::b", "-q", "-o", "x=1",
                                    "--deselect=c::d", "-k=e"]) == ["-q", "-o", "x=1"]
+
+
+def test_relative_python_path_is_accepted_without_leaving_the_venv(tmp_path, monkeypatch):
+    import os
+    import sys
+
+    from faultline.config import load_config
+
+    monkeypatch.chdir(os.path.dirname(os.path.dirname(sys.executable)))  # the venv root
+    cfg = load_config(str(tmp_path), "bin/" + os.path.basename(sys.executable))
+    assert cfg.python == os.path.abspath(sys.executable)  # symlink kept, not resolved

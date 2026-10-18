@@ -4,7 +4,7 @@
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
-![Tests: 166 passing](https://img.shields.io/badge/tests-166%20passing-brightgreen)
+![Tests: 166 passing](https://img.shields.io/badge/tests-167%20passing-brightgreen)
 ![MCP](https://img.shields.io/badge/MCP-stdio-purple)
 
 When a test fails, coding agents waste turns rerunning noisy output and hunting
@@ -253,7 +253,7 @@ Full report: [docs/EVALUATION.md](docs/EVALUATION.md). Raw data:
 - **Every entry point:** standard MCP, Claude Code hooks and skill, a CLI,
   and an agent with pluggable model providers.
 - **Clear interfaces:** typed JSON contracts with published
-  [schemas](schemas/), 166 tests, and the MIT license.
+  [schemas](schemas/), 167 tests, and the MIT license.
 
 ---
 
@@ -271,7 +271,7 @@ src/faultline/        engine, hooks (claude.py), agent (agent.py), MCP server, C
 src/faultline/_probe/ pytest plugins that run inside the target project
 eval/                 harness, cases, per-session results, CSV export
 docs/                 evaluation report, architecture, security, prior art
-tests/                166 automated tests
+tests/                167 automated tests
 ```
 
 ## License
