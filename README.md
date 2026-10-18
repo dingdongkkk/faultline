@@ -202,18 +202,6 @@ and 2 models (table above):
 Silence rules mean 0 bytes injected (6 of 6 sessions). The only cost is about
 500 tokens of setup.
 
-### Open-source model (Gemma 4 12B, offline, context over MCP)
-| Gemma 4 12B | Where it went | Tokens | Fixed? |
-|---|---|---|---|
-| Without Faultline | The crash site (the symptom) | 88,292 | No |
-| With Faultline | **The real root cause** (line 961) | 99,155 | No |
-
-- **What Faultline did:** it steered the open model from the symptom to the
-  true cause.
-- **Why there's no fix:** the 12B model couldn't produce an exact-match edit
-  within 30 steps.
-- **Next step:** larger open models, or a more forgiving edit tool.
-
 ### Lessons that shaped the design
 - **Automatic delivery is what works.** Agents called optional tools 0 times
   in 26 sessions, which is why Faultline injects context automatically
