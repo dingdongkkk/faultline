@@ -63,7 +63,7 @@ git clone https://github.com/dingdongkkk/faultline && cd faultline
 uv venv -p 3.12 && uv pip install -e ".[mcp,dev]"
 ```
 ```bash
-.venv/bin/faultline investigate --repo tests/fixtures/shop --python .venv/bin/python "tests/test_cart.py::test_bulk_threshold[10-1000]"
+.venv/bin/faultline investigate --repo tests/fixtures/shop --python .venv/bin/python --budget-tokens 2000 "tests/test_cart.py::test_bulk_threshold[10-1000]"
 ```
 You'll get a compact JSON report:
 - the suspect lines ranked, with ties shown honestly;
