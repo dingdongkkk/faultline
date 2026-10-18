@@ -1,6 +1,34 @@
 # Faultline
 
-**Automatic failing-test context for AI coding agents: fix the same bugs with ~29% fewer tokens.**
+**An MCP server that helps AI coding agents fix failing Python tests with less work.**
+
+## Highlights
+
+### 1. Saved 29.3% of tokens on Claude Code
+On a real bug in a large codebase (youtube-dl, 67k lines), Claude Code with
+Faultline used **29.3% fewer tokens** than Claude Code alone. All fixes were
+verified by tests.
+
+| Claude model | Without Faultline | With Faultline | **Saved** | Sessions |
+|---|---|---|---|---|
+| Opus 5.5 | 219,559 tokens | 160,547 tokens | **26.9%** | 9 vs 9 |
+| Sonnet 5.5 | 335,567 tokens | 233,311 tokens | **30.5%** | 12 vs 12 |
+| **Both** | 285,849 tokens | 202,127 tokens | **29.3%** | 21 vs 21 |
+
+### 2. Works with any open-source model through MCP
+Faultline is a standard **MCP server** (stdio), so any MCP-compatible agent
+or client can use it. It also ships its own **open-model debugging agent**
+that gets Faultline's context **over MCP**:
+- **Fully offline:** any model that [llama.cpp](https://github.com/ggml-org/llama.cpp)
+  can run (for example Gemma 4, Qwen, Llama). Private, no API costs.
+- **Through an API:** Gemma 4 via the Gemini API.
+
+Tested end to end with **Gemma 4 12B running offline on a laptop**: Faultline
+pointed it to the real root cause of the bug (see [Results](#results)).
+
+---
+
+## The problem
 
 When a test fails, coding agents burn turns rerunning noisy test output and
 hunting through files for the crash. Every turn re-reads the whole conversation,
@@ -14,8 +42,7 @@ It stays silent when it can't help. Faultline never edits your code.
 
 | | |
 |---|---|
-| **Works with** | Claude Code (automatic hooks) · any MCP client · open-weight models (**Gemma 4** via the Gemini API, or fully local via llama.cpp) |
-| **Measured** | **29.3% fewer tokens** across 42 real Claude Code sessions on a large real-world bug, with every fix verified by tests |
+| **Works with** | Claude Code (automatic hooks) · any MCP client · any open-source model (offline via llama.cpp, or Gemma 4 via the Gemini API) |
 | **Setup** | One install command plus one command per project |
 | **Language** | Python + pytest (v0.0.1, research prototype) |
 
@@ -38,9 +65,10 @@ Installed with one command; no tool calls needed.
   read those whole) or when a test fails on its own `assert`. This keeps the
   overhead about neutral where it can't help.
 
-### 2. Open-model debugging agent (Gemma 4: API or local)
-`faultline agent` turns an open-weight model into a bug-fixer that gets the
-same Faultline context.
+### 2. Open-model debugging agent (any open-source model, context over MCP)
+`faultline agent` turns an open-source model into a bug-fixer. It fetches
+Faultline's context by calling the MCP server's `failure_context` tool, like
+any MCP client.
 - **Gemini API:** `gemma-4-26b-a4b-it` / `gemma-4-31b-it`. No download needed.
 - **Fully local:** llama.cpp, for example Gemma 4 12B. Private and free; code
   never leaves your machine.
@@ -102,7 +130,7 @@ faultline agent "tests/test_app.py::test_bug" --repo /path/to/project --python /
 The gemini provider sends code excerpts and test output to Google; it prints
 this notice when it starts.
 
-### Open model: fully local (llama.cpp)
+### Open model: fully offline (any llama.cpp model)
 ```bash
 brew install llama.cpp
 ```
@@ -112,7 +140,10 @@ llama-server -m gemma-4-12b-it-qat-q4_0.gguf --host 127.0.0.1 --port 8089 -c 163
 ```bash
 faultline agent "tests/test_app.py::test_bug" --repo /path/to/project --python /path/to/project/.venv/bin/python --provider local
 ```
-The official Gemma 4 12B QAT GGUF is 6.98 GB (`google/gemma-4-12B-it-qat-q4_0-gguf`, Apache-2.0).
+Any GGUF model that llama.cpp can serve works (Gemma, Qwen, Llama, and so
+on). The one we tested is Google's official Gemma 4 12B QAT GGUF, 6.98 GB
+(`google/gemma-4-12B-it-qat-q4_0-gguf`, Apache-2.0). Running offline means no
+API costs and your code never leaves your machine.
 
 ---
 
