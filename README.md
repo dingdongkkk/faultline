@@ -143,6 +143,100 @@ You'll get a compact JSON report:
 
 ---
 
+## Technical architecture
+
+```mermaid
+flowchart TB
+    subgraph Clients["Entry points"]
+        CC["Claude Code<br/>hooks + skill"]
+        MC["Any MCP client"]
+        AG["Open-model agent<br/>faultline agent"]
+        CLI["CLI<br/>faultline investigate"]
+    end
+
+    subgraph Adapters["Adapters (thin, no logic)"]
+        HK["claude.py<br/>hook handlers"]
+        MCP["mcp_server.py<br/>7 tools over stdio"]
+    end
+
+    subgraph Engine["Faultline engine (runs in Faultline's own Python)"]
+        SR["search.py<br/>bounded code search"]
+        OR["orchestrator.py<br/>investigation loop"]
+        RK["ranking.py<br/>Ochiai, exact ties"]
+        PL["planners.py<br/>deterministic or local model"]
+        CMP["comparison.py<br/>failing vs passing run"]
+        CAP["capture.py<br/>value history"]
+        PT["patch.py<br/>check_patch"]
+        BG["budget.py<br/>token-budget packing"]
+        EV["evidence.py + fingerprint.py<br/>evidence store, freshness"]
+        EX["procs.py + worker.py<br/>supervised child process"]
+    end
+
+    subgraph Target["Your project's Python"]
+        PR["_probe/ pytest plugins<br/>coverage, tracer, capture,<br/>safe snapshots + redaction"]
+    end
+
+    subgraph Models["Models (optional)"]
+        LL["llama.cpp server<br/>Gemma, Qwen, any GGUF"]
+        GM["Gemini API<br/>Gemma 4"]
+    end
+
+    CC --> HK
+    MC --> MCP
+    AG -- "failure_context over MCP" --> MCP
+    CLI --> OR
+    HK --> SR & CAP
+    MCP --> SR & OR & CAP & PT
+    OR --> RK & PL & CMP
+    PL -. "chooses among engine IDs" .-> LL
+    AG -. "edits + reasoning" .-> LL & GM
+    OR & CAP & PT --> EX -- "timeouts, cleanup" --> PR
+    OR --> BG --> EV
+```
+
+### How a failing test flows through Faultline
+1. **Trigger.** A test fails in Claude Code (a hook fires), or a client calls
+   an MCP tool, or the agent asks for `failure_context`.
+2. **Reproduce in isolation.** Faultline starts pytest in a **separate child
+   process** in your project's own interpreter, with its own process group,
+   a deadline, and cleanup of leftover processes.
+3. **Measure, don't guess.** Probe plugins inside that child record per-test,
+   per-phase coverage, the failure signature, and a bounded history of local
+   values. Values are serialized safely: no `repr` calls, secrets redacted.
+4. **Rank.** Target-focused Ochiai scoring ranks suspect lines from coverage
+   counts. Ties are decided on exact integer fractions, never floats.
+5. **Narrow down.** A planner (deterministic rules, or an optional local
+   model that may only *choose* among engine-minted IDs) picks which lines to
+   observe next; the most similar passing test is run for comparison.
+6. **Pack.** The response is packed to a token budget, with handles for
+   anything omitted, and saved as evidence outside your repo. Content hashes
+   mark it stale as soon as the code changes.
+7. **Verify.** `check_patch` reruns the suite against the current checkout.
+   Faultline never edits your code itself.
+
+### Design principles
+| Principle | How it's enforced |
+|---|---|
+| **The engine measures; models only choose** | Every fact comes from a real test run. Model output is validated against schemas and kept apart as untrusted text. |
+| **Bounded everything** | Token budgets, byte caps, timeouts, and capped hook injections (2 KB). |
+| **Two-process isolation** | Faultline's code never runs in your interpreter, except the small stdlib-only `_probe` package. |
+| **Typed contracts** | All cross-boundary data is pydantic models in `contracts.py`, exported as [JSON Schemas](schemas/). |
+| **Freshness over caching** | Evidence is never reused to skip a run; stale evidence is labelled. |
+| **Silent when unhelpful** | Hooks inject nothing on small repos or bare test assertions. |
+
+### Module map
+| Layer | Modules |
+|---|---|
+| Entry points | `cli.py`, `claude.py` (hooks), `mcp_server.py`, `agent.py` |
+| Investigation | `orchestrator.py`, `ranking.py`, `planners.py`, `comparison.py` |
+| Retrieval | `search.py`, `source.py`, `capture.py` |
+| Execution | `execution.py`, `worker.py`, `procs.py`, `patch.py` |
+| State and output | `evidence.py`, `fingerprint.py`, `budget.py`, `contracts.py`, `config.py` |
+| Models | `llama.py` (local planner), `agent.py` (local and Gemini providers) |
+| Inside your project | `_probe/cov_plugin.py`, `observe_plugin.py`, `capture_plugin.py`, `snapshot.py` |
+
+---
+
 ## Setup guide
 
 ### Claude Code (recommended)
@@ -258,7 +352,7 @@ Full report: [docs/EVALUATION.md](docs/EVALUATION.md). Raw data:
 src/faultline/        engine, hooks (claude.py), agent (agent.py), MCP server, CLI
 src/faultline/_probe/ pytest plugins that run inside the target project
 eval/                 harness, cases, per-session results, CSV export
-docs/                 evaluation report, architecture, security, prior art
+docs/                 evaluation report, security, prior art, demo
 tests/                167 automated tests
 ```
 
