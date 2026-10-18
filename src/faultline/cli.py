@@ -24,7 +24,10 @@ def main(argv: list[str] | None = None) -> int:
         from .agent import main as agent_main
 
         return agent_main(raw[1:])
-    ap = argparse.ArgumentParser(prog="faultline")
+    ap = argparse.ArgumentParser(
+        prog="faultline",
+        epilog="Also: faultline agent TEST --repo R --python P --provider {local,gemini}  "
+               "(open-model debugging agent; see `faultline agent --help`)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     install = sub.add_parser("install-claude", help="install project-local automatic retrieval and /faultline skill")
     install.add_argument("--repo", required=True)
