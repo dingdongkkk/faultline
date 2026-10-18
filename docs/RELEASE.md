@@ -5,7 +5,7 @@ the maintainer's explicit instruction.
 
 | Item | State |
 |---|---|
-| License | Apache-2.0 (`LICENSE`, fetched from apache.org) |
+| License | MIT (`LICENSE`); switched from Apache-2.0 on 2026-10-18 at the maintainer's request |
 | Third-party / model attribution | `THIRD_PARTY_NOTICES.md`; direct dependency licenses checked from installed metadata |
 | Wheel + sdist build | `uv build` OK; wheel installs into a clean venv, CLI runs, `_probe` package present, an investigation completes |
 | sdist hygiene | no venv, caches, model weights or private evaluation files (checked by listing) |

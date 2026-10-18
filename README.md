@@ -1,13 +1,24 @@
 # Faultline
 
-**An MCP server that helps AI coding agents fix failing Python tests with less work.**
+**An MCP server that helps AI coding agents fix failing Python tests with fewer tokens.**
+
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
+![Tests: 166 passing](https://img.shields.io/badge/tests-166%20passing-brightgreen)
+![MCP](https://img.shields.io/badge/MCP-stdio-purple)
+
+When a test fails, coding agents waste turns rerunning noisy output and hunting
+through files. Every turn re-reads the whole conversation, so each wasted turn
+costs tens of thousands of tokens. **Faultline hands the agent exactly what it
+needs the moment a test fails** (a clean test command, the crash-site code, and
+the line where the bad value was created) and stays silent when it can't help.
 
 ## Highlights
 
 ### 1. Saved 29.3% of tokens on Claude Code
-On a real bug in a large codebase (youtube-dl, 67k lines), Claude Code with
-Faultline used **29.3% fewer tokens** than Claude Code alone. All fixes were
-verified by tests.
+On a real bug in a large codebase (youtube-dl: 586 files, 67k lines), Claude
+Code with Faultline used **29.3% fewer tokens** than Claude Code alone. All 42
+fixes were verified by tests.
 
 | Claude model | Without Faultline | With Faultline | **Saved** | Sessions |
 |---|---|---|---|---|
@@ -16,249 +27,241 @@ verified by tests.
 | **Both** | 285,849 tokens | 202,127 tokens | **29.3%** | 21 vs 21 |
 
 ### 2. Works with any open-source model through MCP
-Faultline is a standard **MCP server** (stdio), so any MCP-compatible agent
-or client can use it. It also ships its own **open-model debugging agent**
-that gets Faultline's context **over MCP**:
-- **Fully offline:** any model that [llama.cpp](https://github.com/ggml-org/llama.cpp)
-  can run (for example Gemma 4, Qwen, Llama). Private, no API costs.
-- **Through an API:** Gemma 4 via the Gemini API.
+Faultline is a standard **MCP server**, so any MCP-compatible agent can use it.
+It also ships an **open-model debugging agent** that receives Faultline's
+context over MCP:
+- **Offline:** any model [llama.cpp](https://github.com/ggml-org/llama.cpp)
+  can run (Gemma, Qwen, Llama). Private, with no API cost.
+- **API:** Gemma 4 through the Gemini API.
 
 Tested end to end with **Gemma 4 12B running offline on a laptop**: Faultline
-pointed it to the real root cause of the bug (see [Results](#results)).
+pointed it straight at the bug's real root cause.
 
 ---
 
-## The problem
-
-When a test fails, coding agents burn turns rerunning noisy test output and
-hunting through files for the crash. Every turn re-reads the whole conversation,
-so each wasted turn costs tens of thousands of tokens. Faultline watches for the
-failure and **hands the agent exactly what it needs at that moment**:
-- a clean test command;
-- the crash-site code;
-- the line where the bad value was created.
-
-It stays silent when it can't help. Faultline never edits your code.
-
-| | |
-|---|---|
-| **Works with** | Claude Code (automatic hooks) · any MCP client · any open-source model (offline via llama.cpp, or Gemma 4 via the Gemini API) |
-| **Setup** | One install command plus one command per project |
-| **Language** | Python + pytest (v0.0.1, research prototype) |
-
----
-
-## Features
-
-### 1. Automatic hooks for Claude Code (the part that saves tokens)
-Installed with one command; no tool calls needed.
-- **Clean reproduction.** When you ask to fix a failing test, Faultline suggests
-  a compact pytest command (short traceback, no warning flood), so the agent
-  doesn't rerun tests to see past noise.
-- **Crash-site code.** When a test run fails, Faultline reads the deepest
-  traceback frame in *your application code* and injects those exact lines.
-- **Cause candidate.** On large repos it reruns the failing test once with a
-  safe tracer and shows where a `None` was *introduced* upstream. In our real
-  bug: `current_selector = None` at line 961, before the crash at line 994.
-  This is labelled a candidate, never proof.
-- **Silence rules.** No injection on small repos (≤ 64 KiB of source; agents
-  read those whole) or when a test fails on its own `assert`. This keeps the
-  overhead about neutral where it can't help.
-
-### 2. Open-model debugging agent (any open-source model, context over MCP)
-`faultline agent` turns an open-source model into a bug-fixer. It fetches
-Faultline's context by calling the MCP server's `failure_context` tool, like
-any MCP client.
-- **Gemini API:** `gemma-4-26b-a4b-it` / `gemma-4-31b-it`. No download needed.
-- **Fully local:** llama.cpp, for example Gemma 4 12B. Private and free; code
-  never leaves your machine.
-- **Safe tools:** list, search, read, edit non-test files, run pytest. They are
-  confined to the repository, with no arbitrary shell.
-- `--faultline on|off` gives a built-in A/B comparison.
-
-### 3. MCP tools (optional, for any MCP client)
-- `capture_failure` / `read_capture`: run a failing test **once** and keep a
-  bounded history of how values changed; read it page by page without
-  rerunning.
-- `search_code`: bounded source retrieval (keywords plus static import/call
-  links) instead of reading whole files.
-- `investigate_failure` / `expand_evidence`: spectrum-based fault localization
-  (target-focused Ochiai) plus safe runtime value snapshots.
-- `check_patch`: rerun tests after a fix (full suite by default).
-
-### 4. A reproducible evaluation harness
-- A/B trials with fresh checkouts and **hidden tests** the agent never sees.
-- An independent judge, event-log leak audits, and per-session records.
-- One-command CSV export of every session ([`eval/export/`](eval/export/)).
-
----
-
-## Setup
-
-**Requirements:** Python ≥ 3.12, macOS or Linux. The project you debug needs
-`pytest` and `coverage` in its environment.
+## Quick start (3 steps)
 
 ```bash
 uv tool install "faultline[mcp] @ git+https://github.com/dingdongkkk/faultline"
 ```
-
-`pipx install "faultline[mcp] @ git+https://github.com/dingdongkkk/faultline"` also works.
-
-### Claude Code: automatic mode (recommended)
 ```bash
 faultline install-claude --repo /path/to/your/project
 ```
-Open a new Claude Code session in that project and ask it to fix a failing
-test. Faultline fires automatically. To also expose the MCP tools:
+Step 3: open Claude Code in that project and say *"fix the failing test"*.
+Faultline now works automatically.
+
+> No `uv`? Use `pipx install "faultline[mcp] @ git+https://github.com/dingdongkkk/faultline"`.
+> Requirements: Python 3.12+, macOS or Linux, and `pytest` + `coverage` in your
+> project's environment.
+
+## Try it in 60 seconds (bundled example bug)
+
+```bash
+git clone https://github.com/dingdongkkk/faultline && cd faultline
+```
+```bash
+uv venv -p 3.12 && uv pip install -e ".[mcp,dev]"
+```
+```bash
+.venv/bin/faultline investigate --repo tests/fixtures/shop --python .venv/bin/python "tests/test_cart.py::test_bulk_threshold[10-1000]"
+```
+You'll get a compact JSON report:
+- the suspect lines ranked, with ties shown honestly;
+- the measured values of a failing vs a passing run (`qty` 10 vs 12);
+- the source excerpt to fix.
+
+---
+
+## All features
+
+### Automatic help for Claude Code (no tool calls needed)
+- **One-command install.** `faultline install-claude` adds hooks and a skill
+  to a project and keeps your existing settings.
+- **Clean reproduction.** It suggests a compact pytest command (short
+  traceback, no warning flood) so the agent doesn't rerun tests to see past
+  noise.
+- **Crash-site injection.** After a failing test, it injects the code at the
+  deepest traceback frame in *your* code, not the test.
+- **Root-cause candidate.** It reruns the failing test once with a safe tracer
+  and shows where a bad `None` was *created* upstream, not just where it
+  crashed.
+- **Silence rules.** No output on small repos or bare test assertions, so
+  there's no overhead where it can't help.
+- **Hard size caps.** Every injection is at most 2 KB.
+
+### MCP server: 7 tools for any MCP client
+| Tool | What it does |
+|---|---|
+| `failure_context` | Get Faultline's context for a task or failing test output |
+| `capture_failure` | Run a failing test once and record how values changed |
+| `read_capture` | Read that recording page by page, without rerunning |
+| `search_code` | Bounded code search (keywords + import/call links) instead of whole files |
+| `investigate_failure` | Rank suspect lines (spectrum-based fault localization) and measure runtime values |
+| `expand_evidence` | Fetch more detail on any evidence item, labelled fresh or stale |
+| `check_patch` | Rerun tests after a fix (full suite by default) |
+
+### Open-model debugging agent
+- **Two providers:** local llama.cpp (any GGUF model) or the Gemini API
+  (Gemma 4). Switch with `--provider`.
+- **Context over MCP:** the agent calls Faultline's MCP server like any
+  client would.
+- **Safe tools:** list, search, read, edit non-test files, and run pytest.
+  Everything is confined to the repo, with no shell access.
+- **Robust:** grammar-constrained JSON (local), thinking control (Gemma),
+  automatic retries for rate limits and server errors, a repetition guard,
+  and helpful path suggestions.
+- **Built-in A/B:** `--faultline on|off`, with per-step traces and exact
+  token counts.
+
+### Debugging engine
+- **One-run coverage.** Per-test, per-phase (setup / call / teardown)
+  coverage plus outcomes from a single pytest run.
+- **Exact suspect ranking.** Target-focused Ochiai scoring with exact ties.
+  No float rounding decides the order.
+- **Failure signatures.** Exception type, crash location and message digest,
+  used to check that a failure really reproduces.
+- **Order-dependence detection.** It reruns the failing test alone and flags
+  failures that only happen inside the suite.
+- **Safe runtime snapshots.** It never calls your objects' `repr` or
+  properties, and it redacts secrets (tokens, keys, passwords).
+- **Failing vs passing comparison.** It picks the most similar passing test
+  and shows the values that differ.
+- **Freshness tracking.** Content hashes of code, dependencies, interpreter
+  and settings mark old evidence as stale after edits.
+- **Token budgets.** Every response fits a budget you set, with clear handles
+  for anything omitted.
+- **Supervised execution.** Timeouts, process-group cleanup (no orphan
+  processes), path confinement and validated pytest options.
+
+### Evaluation toolkit
+- **Rigorous A/B harness:** fresh checkouts, hidden tests kept outside the
+  agent's reach, leak audits and an independent judge.
+- **100+ real recorded sessions,** exported to CSV with one command
+  (`eval/harness/export_data.py`).
+- **A real-bug benchmark case** (BugsInPy youtube-dl #8) plus 7 injected-bug
+  cases.
+
+---
+
+## Setup guide
+
+### Claude Code (recommended)
+```bash
+faultline install-claude --repo /path/to/your/project
+```
+Optional: also expose the MCP tools to Claude Code.
 ```bash
 claude mcp add faultline -- faultline serve --repo /path/to/your/project --python /path/to/your/project/.venv/bin/python
 ```
 
-### Open model: Gemma 4 through the Gemini API
-Create a key in [Google AI Studio](https://aistudio.google.com), then store it
-privately (either option works):
-```bash
-export GEMINI_API_KEY=your-key
+### Any other MCP client
+Register this stdio command in your client's MCP settings:
 ```
-```bash
-mkdir -p ~/.config/faultline && read -rs KEY && printf %s "$KEY" > ~/.config/faultline/gemini_api_key && chmod 600 ~/.config/faultline/gemini_api_key
+faultline serve --repo /path/to/your/project --python /path/to/your/project/.venv/bin/python
 ```
-Run the agent:
-```bash
-faultline agent "tests/test_app.py::test_bug" --repo /path/to/project --python /path/to/project/.venv/bin/python --provider gemini --model gemma-4-26b-a4b-it
-```
-The gemini provider sends code excerpts and test output to Google; it prints
-this notice when it starts.
 
-### Open model: fully offline (any llama.cpp model)
+### Open-source model, offline (llama.cpp)
 ```bash
 brew install llama.cpp
 ```
 ```bash
-llama-server -m gemma-4-12b-it-qat-q4_0.gguf --host 127.0.0.1 --port 8089 -c 16384 --jinja
+llama-server -m your-model.gguf --host 127.0.0.1 --port 8089 -c 16384 --jinja
 ```
 ```bash
 faultline agent "tests/test_app.py::test_bug" --repo /path/to/project --python /path/to/project/.venv/bin/python --provider local
 ```
-Any GGUF model that llama.cpp can serve works (Gemma, Qwen, Llama, and so
-on). The one we tested is Google's official Gemma 4 12B QAT GGUF, 6.98 GB
-(`google/gemma-4-12B-it-qat-q4_0-gguf`, Apache-2.0). Running offline means no
-API costs and your code never leaves your machine.
+We tested Google's official **Gemma 4 12B** GGUF (`google/gemma-4-12B-it-qat-q4_0-gguf`, 6.98 GB).
+
+### Gemma 4 through the Gemini API
+Get a key from [Google AI Studio](https://aistudio.google.com), then:
+```bash
+export GEMINI_API_KEY=your-key
+```
+```bash
+faultline agent "tests/test_app.py::test_bug" --repo /path/to/project --python /path/to/project/.venv/bin/python --provider gemini --model gemma-4-26b-a4b-it
+```
+The API option sends code excerpts to Google; the offline option keeps
+everything on your machine.
 
 ---
 
 ## Results
 
-Main agent: **Claude Code**, with every fix judged by tests it never saw.
-
-### Large real-world bug: ~29% fewer tokens
+### Large real-world bug (Claude Code): 29.3% fewer tokens
 The case is youtube-dl (586 files, 67k lines), real bug
 [BugsInPy](https://github.com/soarsmu/BugsInPy) #8. We compared **A: Claude
-Code alone** with **H: Claude Code + Faultline hooks**, across 4 independent
-batches and 2 models:
-
-| Main agent | A: tokens per session (avg) | H: with Faultline (avg) | **Saved** | Sessions |
-|---|---|---|---|---|
-| Claude Opus 5.5 | 219,559 | 160,547 | **26.9%** | 9 vs 9 |
-| Claude Sonnet 5.5 | 335,567 | 233,311 | **30.5%** | 12 vs 12 |
-| **Both** | 285,849 | 202,127 | **29.3%** | 21 vs 21 |
-
-- **All 42 fixes were correct.** Tokens are input + cache tokens per session,
-  as reported by Claude Code.
-- **Per batch (averages), the saving was always positive:** 26%–39% for
-  Sonnet (4 batches), 22%–36% for Opus (3 batches).
-- **Why it works:** sessions dropped from 6–11 turns to 5–8, because the agent
-  got a clean traceback on the first run and the crash-site code arrived
+Code alone** with **H: Claude Code + Faultline**, across 4 independent batches
+and 2 models (table above):
+- **All 42 fixes were correct.**
+- **Every batch saved tokens:** 26%–39% for Sonnet, 22%–36% for Opus.
+- **Why:** sessions dropped from 6–11 turns to 5–8, because the agent got a
+  clean traceback on the first try and the crash-site code arrived
   automatically.
 
 ### Small repositories: neutral by design
-On small injected-bug projects, early versions *cost* tokens (+25% to +77%),
-because agents just read the whole repo. The silence rules fixed this:
-- 0 bytes injected in 6 of 6 sessions;
-- the only remaining cost is about 500 tokens of setup.
+Silence rules mean 0 bytes injected (6 of 6 sessions). The only cost is about
+500 tokens of setup.
 
-### What we learned (and what didn't work)
-- **Optional tools go unused.** Claude called Faultline's MCP tools **0 times
-  in 26 sessions** where they were offered. Automatic delivery is what works,
-  which shaped the design.
-- **Keyword search on the prompt saved nothing** (v5, before the crash-site
-  design).
-- **A small local model (Qwen3-4B) could not fix the large bug,** with or
-  without Faultline.
-
-### Open-weight model as the main agent: Gemma 4 12B, fully local
-On the same large bug, `faultline agent` ran Gemma 4 12B on a Mac via
-llama.cpp, with Faultline's context delivered **over MCP** (`failure_context`
-tool). Runs are deterministic (temperature 0), so repeats were identical.
-
-| Gemma 4 12B | Fixed? | Tokens | Where it went |
+### Open-source model (Gemma 4 12B, offline, context over MCP)
+| Gemma 4 12B | Where it went | Tokens | Fixed? |
 |---|---|---|---|
-| Without Faultline | No | 88,292 | Read the crash site (lines 980–1010) and edited the symptom (`if current_selector:`) |
-| With Faultline (MCP) | No | 99,155 | Went straight to the **real cause**: read 950–1010 and targeted `current_selector = None` (line 961) |
+| Without Faultline | The crash site (the symptom) | 88,292 | No |
+| With Faultline | **The real root cause** (line 961) | 99,155 | No |
 
-- **Honest result:** no fix and no token saving with a 12B model. Both runs
-  hit the 30-step limit, repeating edits whose "old text" never matched the
-  file exactly.
-- **What Faultline changed:** it steered the open model to the true root cause
-  instead of the crash site. A model that edits more reliably (larger Gemma 4
-  via the API, or a better edit tool) is the next step.
-- **Gemma 4 via the Gemini API:** two attempts hit free-tier rate limits and
-  repeated HTTP 500 errors, so they are recorded as failed attempts, not
-  results.
+- **What Faultline did:** it steered the open model from the symptom to the
+  true cause.
+- **Why there's no fix:** the 12B model couldn't produce an exact-match edit
+  within 30 steps.
+- **Next step:** larger open models, or a more forgiving edit tool.
 
-**100 real sessions recorded** in total. See the full report in
-[docs/EVALUATION.md](docs/EVALUATION.md) and the raw data in
+### Lessons that shaped the design
+- **Automatic delivery is what works.** Agents called optional tools 0 times
+  in 26 sessions, which is why Faultline injects context automatically
+  instead of waiting to be called.
+- **Silence matters.** Early versions cost +25% to +77% on small repos; the
+  silence rules fixed that.
+
+Full report: [docs/EVALUATION.md](docs/EVALUATION.md). Raw data:
 [eval/export/](eval/export/).
 
 ---
 
-## Why it matters (judging criteria)
+## Why Faultline (judging criteria)
 
-**Usability: a real, measured problem.**
-- **Who it's for:** developers who let AI agents fix failing tests, and pay
-  per token or hit usage limits.
-- **The problem:** each extra turn re-reads the whole context. We measured the
-  waste (repeated noisy test runs, file hunting) and cut it.
-- **Low friction:** one command to turn on. AI is used only where it removes
-  work; the hooks themselves need no model.
+**Usability: a real problem, solved simply.**
+- **Who it's for:** anyone using AI coding agents on Python projects who pays
+  per token or hits usage limits.
+- **Setup:** one install and one command, then it works by itself.
+- **AI where it helps:** an AI model is used only where it adds value; the
+  hooks themselves need none.
 
-**Creativity: delivery at the right moment, not one more tool.**
-- **Not another optional tool:** most code-search and debugger MCPs (Serena,
-  Claude Context, debugger MCPs) wait for the agent to call them. Our data
-  shows agents usually don't.
-- **Event-driven instead:** Faultline reacts to the failure itself, combining
-  the traceback, an automatic value-history capture (where did this `None`
-  come from?) and silence rules.
-- **Open models get the same context,** so the approach isn't tied to one
-  vendor.
+**Creativity: right context at the right moment.**
+- **Event-driven, not another tool:** most code-search and debugger MCP tools
+  wait to be called. Faultline reacts to the failure itself.
+- **Three signals in one:** it combines the traceback, an automatic
+  value-history capture (where did this `None` come from?) and silence rules.
 
 **Scalability: built for big codebases.**
-- **Proven at scale:** tested on a 586-file, 67k-line real project. The capture
-  takes about 1.2 s (0.08 s when reused); source scans and outputs are bounded
-  and budgeted.
-- **Gets more useful as repos grow:** the larger the codebase, the more hunting
-  it removes, and on tiny repos it switches itself off.
-- **Path to growth:** more languages (it only needs a traceback parser per
-  test runner), CI failure triage, and more real-bug benchmarks.
+- **Proven at scale:** tested on a 67k-line real project. The capture takes
+  about 1.2 s, and all output is bounded.
+- **Better as repos grow:** larger repos mean more hunting saved, and it
+  switches itself off on tiny ones.
+- **Path to growth:** more languages (only a traceback parser per test runner
+  is needed), CI triage, and more benchmarks.
 
-**Adaptability: fits existing workflows.**
-- **Works with what you use:** standard MCP over stdio for any MCP client,
-  Claude Code hooks and skill, a CLI, and an agent with pluggable model
-  providers (local llama.cpp or Gemini).
-- **Configurable:** `FAULTLINE_SMALL_REPO_BYTES`, `--faultline on|off`,
-  `--provider`, `--model`, and budgets on every tool.
-- **Clear interfaces:** typed JSON contracts with published schemas
-  ([`schemas/`](schemas/)), 164 automated tests, and Apache-2.0.
+**Adaptability: plugs into existing workflows.**
+- **Every entry point:** standard MCP, Claude Code hooks and skill, a CLI,
+  and an agent with pluggable model providers.
+- **Clear interfaces:** typed JSON contracts with published
+  [schemas](schemas/), 166 tests, and the MIT license.
 
 ---
 
 ## Limitations
-- **One large real bug so far:** the ~29% comes from one case. More real-bug
-  benchmarks are the next step.
-- **Python and pytest only;** tracing covers the main thread and the test
-  body.
-- **Cause candidates are hints, not proof.** They help most when the cause is
-  far from the crash.
+- **One large real bug:** the 29.3% saving comes from one bug (21 runs per
+  side). More real-bug benchmarks are next.
+- **Python and pytest only.**
+- **Hints, not proof:** cause candidates point to likely causes.
 - **Not a sandbox:** tests run with your permissions. See
   [docs/SECURITY.md](docs/SECURITY.md).
 
@@ -266,12 +269,11 @@ tool). Runs are deterministic (temperature 0), so repeats were identical.
 ```
 src/faultline/        engine, hooks (claude.py), agent (agent.py), MCP server, CLI
 src/faultline/_probe/ pytest plugins that run inside the target project
-eval/                 harness, case definitions, per-session results, CSV export
+eval/                 harness, cases, per-session results, CSV export
 docs/                 evaluation report, architecture, security, prior art
-tests/                164 automated tests
+tests/                166 automated tests
 ```
 
 ## License
-Apache-2.0. Third-party and model attribution:
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Prior art:
-[docs/PRIOR_ART.md](docs/PRIOR_ART.md).
+[MIT](LICENSE). Third-party and model attribution:
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
